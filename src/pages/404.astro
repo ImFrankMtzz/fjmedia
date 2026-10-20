@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../data/fj';
+---
+
+<Base title="Página no encontrada: FJ Media" description="La página que buscas no existe o cambió de lugar.">
+  <section class="no-encontrada" aria-labelledby="titulo-404">
+    <div class="envoltura">
+      <h1 id="titulo-404" class="cinetico">Esta página no existe</h1>
+      <p>Pudo cambiar de lugar o el enlace estar incompleto. Estas son las páginas del sitio:</p>
+      <ul class="enlaces">
+        <li><a class="boton boton-principal" href={url()}>Ir al inicio</a></li>
+        <li><a class="boton boton-secundario" href={url('redes-sociales/')}>Redes sociales</a></li>
+        <li><a class="boton boton-secundario" href={url('paginas-web/')}>Páginas web</a></li>
+        <li><a class="boton boton-secundario" href={url('contacto/')}>Contacto</a></li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .no-encontrada {
+    padding: clamp(64px, 10vw, 140px) 0;
+  }
+
+  .no-encontrada p {
+    margin-top: 18px;
+    color: var(--gris);
+    font-size: var(--t-1);
+  }
+
+  .enlaces {
+    list-style: none;
+    margin: 28px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* El botón secundario hereda el color del texto; sobre fondo claro va en tinta. */
+  .enlaces .boton-secundario {
+    color: var(--tinta);
+  }
+</style>

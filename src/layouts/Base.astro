@@ -10,6 +10,33 @@ interface Props {
 }
 
 const { title, description, actual = '' } = Astro.props;
+
+// URL absoluta de la página y de la imagen para compartir. Cuando haya dominio propio solo cambia `site`
+// en astro.config.mjs.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const imagen = new URL(url('og.png'), Astro.site).href;
+const esInicio = Astro.url.pathname.replace(/\/$/, '') === import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Datos del negocio para Google. Solo lo confirmado: nombre, correo, ciudad y servicios. El teléfono se
+// suma solo cuando exista el WhatsApp de ventas. Sin calle porque FJ Media no tiene local abierto.
+const negocio = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'FJ Media',
+  url: new URL(url(), Astro.site).href,
+  image: imagen,
+  description:
+    'Contenido para redes sociales, publicaciones pagadas en Facebook y páginas web para negocios en Lázaro Cárdenas, Michoacán.',
+  email: contacto.email ?? undefined,
+  telephone: contacto.whatsapp ? `+${contacto.whatsapp}` : undefined,
+  address: { '@type': 'PostalAddress', addressLocality: 'Lázaro Cárdenas', addressRegion: 'Michoacán', addressCountry: 'MX' },
+  areaServed: { '@type': 'City', name: 'Lázaro Cárdenas' },
+  knowsLanguage: 'es-MX',
+  makesOffer: ['Manejo de redes sociales', 'Publicaciones pagadas en Facebook', 'Páginas web'].map((nombre) => ({
+    '@type': 'Offer',
+    itemOffered: { '@type': 'Service', name: nombre },
+  })),
+};
 const menu = [
   { ruta: 'redes-sociales/', texto: 'Redes sociales' },
   { ruta: 'paginas-web/', texto: 'Páginas web' },
@@ -26,7 +53,23 @@ const anio = new Date().getFullYear();
     <title>{title}</title>
     <meta name="description" content={description} />
     {PREVIEW && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
     <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="FJ Media" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imagen} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="FJ Media: tus redes, activas todo el mes" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imagen} />
+    {esInicio && <script type="application/ld+json" set:html={JSON.stringify(negocio)} />}
     <meta name="theme-color" content="#0d1a2a" />
     <script is:inline>
       // Las animaciones solo esconden contenido si hay JS y no se pidió movimiento reducido.
