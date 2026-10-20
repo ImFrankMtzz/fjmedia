@@ -1,0 +1,159 @@
+---
+import Base from '../layouts/Base.astro';
+import PaginaHero from '../components/PaginaHero.astro';
+import SitioQueSeConstruye from '../components/SitioQueSeConstruye.astro';
+import CasoSantaClara from '../components/CasoSantaClara.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+import { url } from '../data/fj';
+
+// Lo que lleva una página: todo está probado en el sitio de Clínica Santa Clara.
+const incluye = [
+  { titulo: 'WhatsApp con el mensaje listo', texto: 'Tu cliente toca un botón y te escribe sin tener que redactar nada.' },
+  { titulo: 'Botón para llamar', texto: 'Visible en cada página, para que nadie tenga que buscar tu número.' },
+  { titulo: 'Mapa y cómo llegar', texto: 'Con tu dirección correcta y el camino desde el celular.' },
+  { titulo: 'Tus datos en un solo lugar', texto: 'Horarios, servicios y teléfonos que tú confirmas, sin versiones distintas.' },
+  { titulo: 'Se ve bien en celular', texto: 'Probada en teléfonos de distintos tamaños, rápida aunque la señal no ayude.' },
+  { titulo: 'Fácil de leer para todos', texto: 'Contraste, tamaños y botones pensados para personas de todas las edades.' },
+];
+
+// El proceso que seguimos con Santa Clara (ver la propuesta comercial).
+const pasos = [
+  { titulo: 'Platicamos', texto: 'Qué necesita tu negocio y qué quieres que encuentren tus clientes.' },
+  { titulo: 'Nos compartes tu información', texto: 'Te mandamos un cuestionario para reunir tus datos, servicios y fotos.' },
+  { titulo: 'Revisas y pides ajustes', texto: 'Te presentamos el sitio con tus datos reales y lo afinamos contigo.' },
+  { titulo: 'Publicamos', texto: 'Tu página queda en línea, lista para compartir.' },
+];
+---
+
+<Base
+  title="Páginas web para negocios en Lázaro Cárdenas: FJ Media"
+  description="Páginas web con tus datos correctos, botón de WhatsApp y mapa, que se ven bien en cualquier celular."
+  actual="paginas-web/"
+>
+  <PaginaHero
+    lineas={['Tu negocio,', 'con su propia', 'página.']}
+    texto="Un sitio con tus datos correctos, botón de WhatsApp y mapa para llegar, que se ve bien en cualquier celular."
+    secundario={{ texto: 'Ver el caso de Santa Clara', href: url('paginas-web/#caso') }}
+  />
+
+  <SitioQueSeConstruye />
+
+  <section class="incluye" aria-labelledby="web-incluye-titulo">
+    <div class="envoltura">
+      <h2 id="web-incluye-titulo" class="cinetico">Lo que lleva tu página</h2>
+      <ul class="incluye-lista">
+        {
+          incluye.map((i) => (
+            <li>
+              <h3>{i.titulo}</h3>
+              <p>{i.texto}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CasoSantaClara />
+
+  <section class="pasos-web" aria-labelledby="pasos-web-titulo">
+    <div class="envoltura">
+      <h2 id="pasos-web-titulo" class="cinetico">Cómo la hacemos</h2>
+      <ol class="pasos-lista">
+        {
+          pasos.map((p, i) => (
+            <li>
+              <span class="num" aria-hidden="true">{i + 1}</span>
+              <h3>{p.titulo}</h3>
+              <p>{p.texto}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <CtaFinal titulo="¿Hacemos la página de tu negocio?" />
+</Base>
+
+<style>
+  .incluye {
+    padding: clamp(64px, 9vw, 120px) 0 0;
+  }
+
+  .incluye-lista {
+    list-style: none;
+    margin: clamp(28px, 4vw, 48px) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0 40px;
+  }
+
+  @media (min-width: 700px) {
+    .incluye-lista {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1040px) {
+    .incluye-lista {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .incluye-lista li {
+    padding: 22px 0;
+    border-top: 3px solid var(--tinta);
+  }
+
+  .incluye-lista h3 {
+    font-size: var(--t-2);
+    font-weight: 760;
+  }
+
+  .incluye-lista p {
+    margin-top: 8px;
+    color: var(--gris);
+  }
+
+  .pasos-web {
+    padding: 0 0 clamp(64px, 9vw, 120px);
+  }
+
+  .pasos-lista {
+    list-style: none;
+    margin: clamp(28px, 4vw, 48px) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 28px;
+  }
+
+  @media (min-width: 900px) {
+    .pasos-lista {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .pasos-lista li {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+  }
+
+  .num {
+    font-family: var(--display);
+    font-weight: 800;
+    font-stretch: 120%;
+    font-size: var(--t-3);
+    color: var(--naranja-texto);
+  }
+
+  .pasos-lista h3 {
+    font-size: var(--t-2);
+    font-weight: 760;
+  }
+
+  .pasos-lista p {
+    color: var(--gris);
+  }
+</style>

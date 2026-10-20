@@ -10,25 +10,25 @@ const pasos = [
   {
     titulo: 'Diseñamos cada pieza',
     texto:
-      'Publicaciones, historias y reels con la imagen de tu marca, para que tu perfil se vea igual de cuidado todo el mes.',
+      'Cada pieza lleva la imagen de tu marca, para que tu perfil se vea igual de cuidado todo el mes.',
   },
   {
     titulo: 'Publicamos por ti',
-    texto: 'Tu contenido sale en Facebook e Instagram en los días planeados. Tú te enfocas en atender a tus clientes.',
+    texto: 'Tus publicaciones salen en Facebook e Instagram en los días planeados. Tú te enfocas en atender a tus clientes.',
   },
   {
-    titulo: 'Anunciamos en Facebook',
-    texto: 'Cuando quieres llegar a más gente, armamos anuncios dirigidos a personas de tu zona que pueden ser tus clientes.',
+    titulo: 'Promocionamos en Facebook',
+    texto: 'Cuando quieres llegar a más gente, promocionamos tus publicaciones en Facebook para personas de tu zona.',
   },
 ];
 
 const plan = [
-  { dia: 'Día 1', tipo: 'Publicación', clase: 'post' },
-  { dia: 'Día 2', tipo: 'Historia', clase: 'historia' },
-  { dia: 'Día 5', tipo: 'Reel', clase: 'reel' },
-  { dia: 'Día 7', tipo: 'Publicación', clase: 'post' },
-  { dia: 'Día 8', tipo: 'Anuncio', clase: 'anuncio' },
-  { dia: 'Día 10', tipo: 'Reel', clase: 'reel' },
+  { dia: 'Lunes', tipo: 'Publicación', clase: 'post' },
+  { dia: 'Martes', tipo: 'Historia', clase: 'historia' },
+  { dia: 'Miércoles', tipo: 'Video', clase: 'video' },
+  { dia: 'Jueves', tipo: 'Carrusel', clase: 'post' },
+  { dia: 'Viernes', tipo: 'Pagada en Facebook', clase: 'pagada' },
+  { dia: 'Sábado', tipo: 'Historia', clase: 'historia' },
 ];
 ---
 
@@ -91,7 +91,7 @@ const plan = [
             <span class="onda"></span>
             <span class="onda"></span>
             <div class="post post-anuncio">
-              <span class="etiqueta-anuncio">Publicidad</span>
+              <span class="etiqueta-anuncio">Publicación pagada</span>
               <div class="lienzo lienzo-chico">
                 <span class="capa capa-fondo"></span>
                 <span class="capa capa-circulo"></span>
@@ -255,13 +255,13 @@ const plan = [
     box-shadow: inset 0 0 0 2px var(--naranja);
   }
 
-  .plan-punto.reel {
+  .plan-punto.video {
     background: var(--tinta);
   }
 
-  .plan-punto.anuncio {
-    width: 18px;
-    border-radius: 99px;
+  .plan-punto.pagada {
+    background: var(--blanco);
+    box-shadow: inset 0 0 0 3px var(--naranja);
   }
 
   .lienzo {

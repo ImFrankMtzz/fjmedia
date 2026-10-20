@@ -6,11 +6,11 @@ import Pendiente from './Pendiente.astro';
 // de los clientes (con su permiso). El contenido se duplica para que el ciclo no tenga cortes.
 const fila1: { tipo: TipoPieza; v: number; vertical?: boolean }[] = [
   { tipo: 'post', v: 0 },
-  { tipo: 'reel', v: 0, vertical: true },
+  { tipo: 'video', v: 0, vertical: true },
   { tipo: 'post', v: 1 },
-  { tipo: 'post', v: 2 },
-  { tipo: 'reel', v: 0, vertical: true },
-  { tipo: 'post', v: 0 },
+  { tipo: 'carrusel', v: 2 },
+  { tipo: 'video', v: 0, vertical: true },
+  { tipo: 'pagada', v: 0 },
   { tipo: 'post', v: 1 },
 ];
 const fila2 = [...fila1].reverse().map((p, i) => ({ ...p, v: p.v + i }));
@@ -35,7 +35,7 @@ const fila2 = [...fila1].reverse().map((p, i) => ({ ...p, v: p.v + i }));
     }
   </div>
   <div class="envoltura muro-nota">
-    <Pendiente texto="las piezas son ilustrativas; aquí van publicaciones y reels reales de los clientes, con su permiso." />
+    <Pendiente texto="las piezas son ilustrativas; aquí van publicaciones y videos reales de los clientes, con su permiso." />
   </div>
 </section>
 

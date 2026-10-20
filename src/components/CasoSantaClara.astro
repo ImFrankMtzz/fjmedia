@@ -1,0 +1,127 @@
+---
+import { url } from '../data/fj';
+
+// Solo hechos verificables del sitio publicado (ver el CLAUDE.md de clinica-staclara y la propuesta).
+const hechos = [
+  'Botón para llamar a urgencias en cada página',
+  'WhatsApp con el mensaje listo para pedir cita',
+  'Mapa y cómo llegar, con la dirección confirmada por la clínica',
+  'Hecho para leerse bien en celular y cumplir accesibilidad WCAG AA',
+];
+---
+
+<section id="caso" class="caso-seccion" aria-labelledby="caso-titulo">
+  <div class="envoltura">
+    <article class="caso">
+      <div class="caso-texto">
+        <img class="caso-logo" src={url('clientes/santa-clara.svg')} alt="Centro Médico de Especialidades Santa Clara" />
+        <h2 id="caso-titulo">Clínica Santa Clara: su página web</h2>
+        <p>
+          La clínica atiende las 24 horas y necesitaba un lugar propio en internet, con teléfonos, horarios y dirección
+          correctos. Le hicimos su sitio con la información que la propia clínica confirmó.
+        </p>
+        <ul class="hechos">
+          {hechos.map((h) => <li>{h}</li>)}
+        </ul>
+        <a class="boton boton-secundario" href="https://clinicasantaclara.mx" rel="noopener" target="_blank">
+          Visitar clinicasantaclara.mx<span class="visualmente-oculto"> (se abre en otra pestaña)</span>
+        </a>
+      </div>
+      <div class="caso-capturas">
+        <img
+          class="captura-escritorio"
+          src={url('clientes/santa-clara-escritorio.webp')}
+          alt="Página de inicio de clinicasantaclara.mx en computadora"
+          width="1360"
+          height="850"
+          loading="lazy"
+        />
+        <img
+          class="captura-celular"
+          src={url('clientes/santa-clara-celular.webp')}
+          alt="Página de inicio de clinicasantaclara.mx en celular"
+          width="390"
+          height="844"
+          loading="lazy"
+        />
+      </div>
+    </article>
+  </div>
+</section>
+
+<style>
+  .caso-seccion {
+    padding: clamp(64px, 9vw, 120px) 0;
+  }
+
+  .caso {
+    display: grid;
+    gap: 32px;
+    padding: clamp(22px, 4vw, 48px);
+    border-radius: var(--radio);
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .caso {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    }
+  }
+
+  .caso-texto {
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+  }
+
+  .caso-logo {
+    height: 56px;
+    width: auto;
+  }
+
+  .caso h2 {
+    font-size: var(--t-3);
+    font-weight: 760;
+  }
+
+  .caso p {
+    color: var(--gris);
+  }
+
+  .hechos {
+    margin: 0;
+    padding-left: 1.1em;
+    display: grid;
+    gap: 6px;
+  }
+
+  .hechos li::marker {
+    color: var(--naranja-texto);
+  }
+
+  .caso-capturas {
+    position: relative;
+    padding-right: 14%;
+    padding-bottom: 8%;
+  }
+
+  .captura-escritorio {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 24px 50px -28px rgb(13 26 42 / 0.6);
+  }
+
+  .captura-celular {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 26%;
+    height: auto;
+    border-radius: 14px;
+    border: 4px solid var(--tinta);
+    box-shadow: 0 24px 50px -24px rgb(13 26 42 / 0.7);
+  }
+</style>

@@ -1,0 +1,214 @@
+---
+import Base from '../layouts/Base.astro';
+import PaginaHero from '../components/PaginaHero.astro';
+import PerfilQueSeArma from '../components/PerfilQueSeArma.astro';
+import Alcance from '../components/Alcance.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+import Pieza, { type TipoPieza } from '../components/Pieza.astro';
+import { clientes, url } from '../data/fj';
+
+// Menú abierto de lo que puede llevar un plan; cada plan se arma con el cliente.
+const incluye: { titulo: string; texto: string; pieza: TipoPieza }[] = [
+  { titulo: 'Publicaciones y carruseles', texto: 'Promociones, servicios, fechas importantes y lo que hace especial a tu negocio.', pieza: 'carrusel' },
+  { titulo: 'Videos e historias', texto: 'Contenido en movimiento para que tu perfil se sienta vivo entre publicación y publicación.', pieza: 'video' },
+  { titulo: 'Diseño con tu marca', texto: 'Colores, tipografía y estilo constantes, para que te reconozcan a la primera.', pieza: 'post' },
+  { titulo: 'Fotos de tu negocio', texto: 'En Lázaro Cárdenas podemos ir a tu negocio a tomar las fotos.', pieza: 'historia' },
+  { titulo: 'Publicaciones pagadas', texto: 'Promoción en Facebook cuando quieres llegar a más personas de tu zona.', pieza: 'pagada' },
+];
+
+const deRedes = clientes.filter((c) => c.servicios.includes('Facebook e Instagram'));
+---
+
+<Base
+  title="Manejo de redes sociales en Lázaro Cárdenas: FJ Media"
+  description="Planeamos, diseñamos y publicamos el contenido de Facebook e Instagram de tu negocio, y lo promocionamos en Facebook."
+  actual="redes-sociales/"
+>
+  <PaginaHero
+    lineas={['Contenido que', 'mantiene tu negocio', 'a la vista.']}
+    texto="Planeamos, diseñamos y publicamos lo que tu negocio comparte en Facebook e Instagram. Cada plan se arma según lo que necesitas."
+    secundario={{ texto: 'Ver publicaciones pagadas', href: url('redes-sociales/#anuncios') }}
+  />
+
+  <PerfilQueSeArma />
+
+  <section class="incluye" aria-labelledby="incluye-titulo">
+    <div class="envoltura">
+      <h2 id="incluye-titulo" class="cinetico">Lo que puede llevar tu plan</h2>
+      <p class="incluye-intro">Lo armamos contigo: tomamos lo que tu negocio necesita y lo dejamos fuera si no.</p>
+      <ul class="incluye-lista">
+        {
+          incluye.map((i) => (
+            <li>
+              <Pieza tipo={i.pieza} variante={1} class="incluye-icono" />
+              <div>
+                <h3>{i.titulo}</h3>
+                <p>{i.texto}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Alcance />
+
+  <section class="claro" aria-labelledby="claro-titulo">
+    <div class="envoltura claro-rejilla">
+      <div>
+        <h2 id="claro-titulo" class="cinetico">Tú te quedas con la conversación</h2>
+        <p>
+          Los mensajes y comentarios que llegan a tus redes los contesta tu negocio. Nadie conoce mejor a tus clientes que
+          tú; nosotros nos encargamos de que lleguen.
+        </p>
+      </div>
+      <div>
+        <h3>Para quién trabajamos</h3>
+        <p>
+          Profesionales de la salud, restaurantes y negocios locales. Estamos en Lázaro Cárdenas y también trabajamos con
+          negocios de otras ciudades.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonio" aria-labelledby="testimonio-titulo">
+    <div class="envoltura">
+      <h2 id="testimonio-titulo" class="visualmente-oculto">Lo que nos cuentan nuestros clientes</h2>
+      <p class="testimonio-frase">
+        Lipocosmedic y Laboratorio Santa María nos cuentan que hoy les llegan más personas por sus publicaciones que por
+        otros medios donde se anunciaban.
+      </p>
+      <ul class="testimonio-logos">
+        {
+          deRedes.map((c) => (
+            <li>
+              {c.logo ? (
+                <img src={url(c.logo)} alt={c.nombre} loading="lazy" />
+              ) : (
+                <span class="logo-texto">{c.nombre}</span>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaFinal titulo="¿Activamos tus redes?" />
+</Base>
+
+<style>
+  .incluye {
+    padding: clamp(64px, 9vw, 120px) 0;
+    background: var(--blanco);
+  }
+
+  .incluye-intro {
+    margin-top: 16px;
+    color: var(--gris);
+    font-size: var(--t-1);
+  }
+
+  .incluye-lista {
+    list-style: none;
+    margin: clamp(28px, 4vw, 48px) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0 48px;
+  }
+
+  @media (min-width: 800px) {
+    .incluye-lista {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .incluye-lista li {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+    padding: 22px 0;
+    border-top: 1px solid var(--linea);
+  }
+
+  .incluye-lista :global(.incluye-icono) {
+    width: 56px;
+  }
+
+  .incluye-lista h3 {
+    font-size: var(--t-2);
+    font-weight: 760;
+  }
+
+  .incluye-lista p {
+    margin-top: 6px;
+    color: var(--gris);
+  }
+
+  .claro {
+    padding: clamp(64px, 9vw, 120px) 0;
+  }
+
+  .claro-rejilla {
+    display: grid;
+    gap: 40px;
+  }
+
+  @media (min-width: 900px) {
+    .claro-rejilla {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      gap: 64px;
+      align-items: end;
+    }
+  }
+
+  .claro p {
+    margin-top: 16px;
+    color: var(--gris);
+    font-size: var(--t-1);
+  }
+
+  .claro h3 {
+    font-size: var(--t-2);
+    font-weight: 760;
+  }
+
+  .testimonio {
+    padding: 0 0 clamp(64px, 9vw, 120px);
+  }
+
+  .testimonio-frase {
+    font-family: var(--display);
+    font-size: var(--t-3);
+    font-weight: 620;
+    font-stretch: 96%;
+    line-height: 1.2;
+    max-width: 30ch;
+    padding-left: 22px;
+    border-left: 4px solid var(--naranja);
+  }
+
+  .testimonio-logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 28px;
+    list-style: none;
+    margin: 28px 0 0;
+    padding: 0;
+  }
+
+  .testimonio-logos img {
+    max-height: 64px;
+    width: auto;
+  }
+
+  .logo-texto {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: var(--t-2);
+  }
+</style>

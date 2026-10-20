@@ -1,0 +1,279 @@
+---
+import { url } from '../data/fj';
+
+// Escena fija ligada al scroll (scripts/motion.ts): 1) se arma el esqueleto de una página, 2) se revela
+// la captura real de clinicasantaclara.mx, 3) entra la versión de celular. Sin animación se ve el final.
+const etapas = [
+  { titulo: 'Ordenamos tu información', texto: 'Servicios, horarios, teléfonos y ubicación, en el orden en que tus clientes los buscan.' },
+  { titulo: 'Le damos tu imagen', texto: 'Colores, tipografía y fotos de tu negocio, con un diseño propio.' },
+  { titulo: 'Funciona en cualquier celular', texto: 'La mayoría de tus clientes te va a encontrar desde su teléfono.' },
+];
+---
+
+<section class="sitio-seccion" data-sitio aria-labelledby="sitio-titulo">
+  <div class="sitio-escena">
+    <div class="envoltura sitio-rejilla">
+      <div class="sitio-texto">
+        <h2 id="sitio-titulo" class="cinetico">Así se construye tu página</h2>
+        <ol class="etapas">
+          {
+            etapas.map((e, i) => (
+              <li data-etapa={i + 1}>
+                <h3>{e.titulo}</h3>
+                <p>{e.texto}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div class="escenario" aria-hidden="true">
+        <div class="ventana" data-ventana>
+          <div class="ventana-barra"><i></i><i></i><i></i></div>
+          <div class="ventana-cuerpo">
+            <div class="esqueleto">
+              <span class="bloque b-menu"></span>
+              <span class="bloque b-titulo"></span>
+              <span class="bloque b-titulo2"></span>
+              <span class="bloque b-texto"></span>
+              <span class="bloque b-boton"></span>
+              <span class="bloque b-tarjeta"></span>
+            </div>
+            <img
+              class="captura"
+              data-captura
+              src={url('clientes/santa-clara-escritorio.webp')}
+              alt=""
+              width="1360"
+              height="850"
+              loading="lazy"
+            />
+          </div>
+        </div>
+        <div class="tel" data-tel>
+          <img src={url('clientes/santa-clara-celular.webp')} alt="" width="390" height="844" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sitio-seccion {
+    position: relative;
+    background: var(--blanco);
+  }
+
+  :global(.motion) .sitio-seccion {
+    height: 300svh;
+  }
+
+  .sitio-escena {
+    padding: clamp(56px, 8vw, 96px) 0;
+  }
+
+  :global(.motion) .sitio-escena {
+    position: sticky;
+    top: var(--cabecera);
+    min-height: calc(100svh - var(--cabecera));
+    display: grid;
+    align-items: center;
+    padding: 24px 0;
+    overflow: hidden;
+  }
+
+  .sitio-rejilla {
+    display: grid;
+    gap: 28px;
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .sitio-rejilla {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: 56px;
+    }
+  }
+
+  .etapas {
+    list-style: none;
+    margin: 20px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+  }
+
+  .etapas li {
+    padding-left: 16px;
+    border-left: 3px solid var(--linea);
+    transition: border-color 0.3s ease;
+  }
+
+  .etapas h3 {
+    font-size: var(--t-2);
+    font-weight: 760;
+  }
+
+  .etapas p {
+    color: var(--gris);
+    margin-top: 4px;
+  }
+
+  :global(.motion) .etapas li {
+    --c: #5a6a7e;
+  }
+
+  :global(.motion) .etapas li h3 {
+    color: var(--c);
+    transition: color 0.3s ease;
+  }
+
+  :global(.motion) .etapas li:global(.activa) {
+    border-color: var(--naranja);
+    --c: var(--tinta);
+  }
+
+  /* En celular, con animación, solo se lee la etapa activa para que la escena quepa en pantalla. */
+  @media (max-width: 959px) {
+    :global(.motion) .etapas li {
+      display: none;
+    }
+
+    :global(.motion) .etapas li:global(.activa) {
+      display: block;
+    }
+
+    :global(.motion) .sitio-texto h2 {
+      font-size: var(--t-3);
+    }
+  }
+
+  .escenario {
+    position: relative;
+    padding: 0 12% 14% 0;
+  }
+
+  .ventana {
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--blanco);
+    box-shadow: 0 30px 60px -30px rgb(13 26 42 / 0.55);
+    border: 1px solid var(--linea);
+    transform-origin: left top;
+  }
+
+  .ventana-barra {
+    display: flex;
+    gap: 6px;
+    padding: 10px 12px;
+    background: var(--papel);
+  }
+
+  .ventana-barra i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--linea);
+  }
+
+  .ventana-cuerpo {
+    position: relative;
+    aspect-ratio: 1360 / 850;
+  }
+
+  .esqueleto {
+    position: absolute;
+    inset: 0;
+  }
+
+  .bloque {
+    position: absolute;
+    border-radius: 6px;
+    background: var(--linea);
+    transform-origin: left;
+  }
+
+  .b-menu {
+    left: 8%;
+    right: 8%;
+    top: 4%;
+    height: 6%;
+  }
+
+  .b-titulo {
+    left: 10%;
+    top: 24%;
+    width: 36%;
+    height: 9%;
+    background: var(--tinta);
+  }
+
+  .b-titulo2 {
+    left: 10%;
+    top: 36%;
+    width: 28%;
+    height: 9%;
+    background: var(--tinta);
+  }
+
+  .b-texto {
+    left: 10%;
+    top: 52%;
+    width: 34%;
+    height: 12%;
+  }
+
+  .b-boton {
+    left: 10%;
+    top: 70%;
+    width: 16%;
+    height: 7%;
+    background: var(--naranja);
+  }
+
+  .b-tarjeta {
+    left: 54%;
+    top: 20%;
+    width: 36%;
+    height: 66%;
+    background: var(--papel);
+    box-shadow: inset 0 0 0 3px var(--linea);
+  }
+
+  .captura {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .tel {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 24%;
+    border-radius: 18px;
+    border: 5px solid var(--tinta);
+    overflow: hidden;
+    background: var(--tinta);
+    box-shadow: 0 30px 50px -24px rgb(13 26 42 / 0.7);
+  }
+
+  .tel img {
+    width: 100%;
+    height: auto;
+  }
+
+  :global(.motion) .bloque {
+    transform: scaleX(0);
+  }
+
+  :global(.motion) .captura {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  :global(.motion) .tel {
+    opacity: 0;
+    transform: translateY(30%);
+  }
+</style>

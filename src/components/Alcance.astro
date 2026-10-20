@@ -1,0 +1,121 @@
+---
+// Publicaciones pagadas: un mapa de puntos (personas de la zona) con tu negocio al centro. Una onda sale
+// del centro y los puntos se encienden cuando los alcanza (scripts/motion.ts). Sin animación, algunos
+// puntos quedan encendidos para contar lo mismo.
+const ancho = 400;
+const alto = 280;
+const centro = { x: ancho / 2, y: alto / 2 };
+
+// Puntos en una retícula con desplazamiento fijo (pseudoaleatorio, igual en cada compilación).
+const puntos: { x: number; y: number; d: number }[] = [];
+let semilla = 7;
+const azar = () => ((semilla = (semilla * 9301 + 49297) % 233280) / 233280);
+for (let y = 20; y < alto; y += 26) {
+  for (let x = 20; x < ancho; x += 26) {
+    const px = x + (azar() - 0.5) * 16;
+    const py = y + (azar() - 0.5) * 16;
+    const d = Math.hypot(px - centro.x, py - centro.y);
+    if (d > 26 && azar() > 0.25) puntos.push({ x: Math.round(px), y: Math.round(py), d: Math.round(d) });
+  }
+}
+const radioMax = Math.hypot(centro.x, centro.y);
+---
+
+<section id="anuncios" class="alcance" aria-labelledby="alcance-titulo">
+  <div class="envoltura alcance-rejilla">
+    <div class="alcance-texto">
+      <h2 id="alcance-titulo" class="cinetico">Publicaciones pagadas en Facebook</h2>
+      <p>
+        Cuando quieres llegar a más gente, promocionamos tus publicaciones para que las vean personas de tu zona que
+        pueden ser tus clientes.
+      </p>
+    </div>
+    <figure class="mapa" aria-hidden="true">
+      <svg viewBox={`0 0 ${ancho} ${alto}`} data-alcance data-radio-max={radioMax}>
+        <circle class="onda" cx={centro.x} cy={centro.y} r="0" data-onda></circle>
+        {
+          puntos.map((p) => (
+            <circle class:list={['punto', { encendido: p.d < 110 }]} cx={p.x} cy={p.y} r="3.5" data-d={p.d} />
+          ))
+        }
+        <g class="pin" transform={`translate(${centro.x} ${centro.y})`}>
+          <circle r="16"></circle>
+          <circle r="6" class="pin-centro"></circle>
+        </g>
+      </svg>
+      <figcaption class="mapa-nota">Tu negocio al centro; los puntos son personas de tu zona.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .alcance {
+    background: var(--tinta);
+    color: var(--blanco);
+    padding: clamp(64px, 9vw, 120px) 0;
+  }
+
+  .alcance-rejilla {
+    display: grid;
+    gap: 36px;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .alcance-rejilla {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 64px;
+    }
+  }
+
+  .alcance-texto p {
+    margin-top: 18px;
+    color: var(--niebla);
+    font-size: var(--t-1);
+  }
+
+  .mapa {
+    margin: 0;
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+    background: var(--puerto);
+    border-radius: var(--radio);
+  }
+
+  .punto {
+    fill: var(--puerto-claro);
+  }
+
+  /* Estado sin animación: los cercanos ya alcanzados. */
+  .punto.encendido {
+    fill: var(--naranja);
+  }
+
+  :global(.motion) .punto.encendido {
+    fill: var(--puerto-claro);
+  }
+
+  .onda {
+    fill: none;
+    stroke: var(--naranja);
+    stroke-width: 2;
+    opacity: 0;
+  }
+
+  .pin circle {
+    fill: var(--blanco);
+  }
+
+  .pin .pin-centro {
+    fill: var(--naranja);
+  }
+
+  .mapa-nota {
+    margin-top: 10px;
+    color: var(--niebla);
+    font-size: 0.9rem;
+  }
+</style>

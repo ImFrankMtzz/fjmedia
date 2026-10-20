@@ -1,0 +1,135 @@
+---
+import Base from '../layouts/Base.astro';
+import Contacto from '../components/Contacto.astro';
+import { url } from '../data/fj';
+
+// Respuestas confirmadas por Frank el 2026-10-19.
+const preguntas = [
+  {
+    p: '¿Cuánto cuesta?',
+    r: 'Depende de lo que necesite tu negocio. Platicamos y te propongo un plan a tu medida; no manejamos precios de lista.',
+  },
+  {
+    p: '¿Qué incluye el manejo de redes?',
+    r: 'Lo armamos contigo: publicaciones, carruseles, videos, historias y, si quieres llegar a más gente, publicaciones pagadas en Facebook.',
+  },
+  {
+    p: '¿Ustedes contestan los mensajes de mis redes?',
+    r: 'No. Los mensajes y comentarios los contesta tu negocio: nadie conoce mejor a tus clientes que tú.',
+  },
+  {
+    p: '¿Trabajan con negocios fuera de Lázaro Cárdenas?',
+    r: 'Sí. Lo único que cambia es cómo resolvemos las fotos, porque en Lázaro Cárdenas podemos ir a tu negocio a tomarlas.',
+  },
+];
+---
+
+<Base
+  title="Contacto: FJ Media"
+  description="Cuéntame qué necesita tu negocio y te propongo un plan a tu medida."
+  actual="contacto/"
+>
+  <Contacto principal />
+
+  <section class="faq" aria-labelledby="faq-titulo">
+    <div class="envoltura faq-rejilla">
+      <h2 id="faq-titulo" class="cinetico">Preguntas frecuentes</h2>
+      <div class="faq-lista">
+        {
+          preguntas.map((q) => (
+            <details>
+              <summary>{q.p}</summary>
+              <p>{q.r}</p>
+            </details>
+          ))
+        }
+        <details>
+          <summary>¿También hacen páginas web?</summary>
+          <p>
+            Sí. Mira cómo trabajamos en <a href={url('paginas-web/')}>páginas web</a> y el caso de Clínica Santa Clara.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .faq {
+    padding: clamp(64px, 9vw, 120px) 0;
+  }
+
+  .faq-rejilla {
+    display: grid;
+    gap: 28px;
+  }
+
+  @media (min-width: 900px) {
+    .faq-rejilla {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: 56px;
+      align-items: start;
+    }
+  }
+
+  details {
+    border-top: 1px solid var(--linea);
+  }
+
+  details:last-child {
+    border-bottom: 1px solid var(--linea);
+  }
+
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    min-height: 56px;
+    padding: 14px 0;
+    font-size: var(--t-1);
+    font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Un + que gira a × al abrir: responde a la acción de la persona. */
+  summary::after {
+    content: '+';
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--tinta);
+    color: var(--blanco);
+    font-size: 1.3rem;
+    line-height: 1;
+    transition: transform 0.25s ease;
+  }
+
+  details[open] summary::after {
+    transform: rotate(45deg);
+  }
+
+  details p {
+    padding: 0 48px 18px 0;
+    color: var(--gris);
+  }
+
+  details a {
+    color: var(--naranja-texto);
+    font-weight: 700;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    summary::after {
+      transition: none;
+    }
+  }
+</style>

@@ -1,28 +1,14 @@
 ---
-import Pieza, { type TipoPieza } from './Pieza.astro';
+import Pieza from './Pieza.astro';
 import { url } from '../data/fj';
+import { mesDe, tipoDelDia, llevaHistoria, campania } from '../data/calendario';
 
-// El calendario muestra un mes de trabajo ilustrativo. El mes y el día en que empieza se calculan al
-// compilar y se corrigen en el navegador (scripts/motion.ts), para que nunca se vea un mes viejo.
-const hoy = new Date();
-const anio = hoy.getFullYear();
-const mes = hoy.getMonth();
-const nombreMes = hoy.toLocaleDateString('es-MX', { month: 'long' });
-const diasMes = new Date(anio, mes + 1, 0).getDate();
-const desfase = (new Date(anio, mes, 1).getDay() + 6) % 7; // lunes = 0
-
-function tipoDelDia(d: number): TipoPieza | null {
-  if (d % 5 === 0) return 'reel';
-  if (d % 3 === 1) return 'post';
-  if (d % 4 === 2) return 'historia';
-  return null;
-}
-
+// El calendario es una vitrina de contenido variado, no el plan de un cliente. El mes se calcula al
+// compilar y se corrige en el navegador (scripts/motion.ts), que además marca el día de hoy.
+const mes = mesDe(new Date());
 const dias = Array.from({ length: 31 }, (_, i) => i + 1);
 const semana = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
 const semanaLarga = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
-// La campaña ilustrativa corre del día 8 al 21.
-const anuncio = { desde: 8, hasta: 21 };
 ---
 
 <section class="hero" aria-labelledby="hero-titulo">
@@ -34,44 +20,47 @@ const anuncio = { desde: 8, hasta: 21 };
         <span class="linea"><span>el mes.</span></span>
       </h1>
       <p class="hero-sub">
-        En FJ Media planeamos, diseñamos y publicamos el contenido de Facebook e Instagram de tu negocio, y
-        manejamos tus anuncios. También hacemos tu página web.
+        Planeamos, diseñamos y publicamos el contenido de Facebook e Instagram de tu negocio, y lo promocionamos
+        cuando quieres llegar a más gente. También hacemos tu página web.
       </p>
       <div class="hero-acciones">
-        <a class="boton boton-principal" href={url('#contacto')}>Cuéntame tu proyecto</a>
-        <a class="boton boton-secundario" href={url('#como-creamos')}>Ver cómo trabajamos</a>
+        <a class="boton boton-principal" href={url('contacto/')}>Cuéntame tu proyecto</a>
+        <a class="boton boton-secundario" href={url('redes-sociales/')}>Ver el servicio de redes</a>
       </div>
     </div>
 
-    <figure class="calendario" aria-label="Ejemplo de un mes de contenido">
+    <figure class="calendario" aria-label="Ejemplo de un mes de publicaciones">
       <figcaption class="cal-cabecera">
-        <span class="cal-mes" data-cal-mes>{nombreMes}</span>
+        <span class="cal-mes" data-cal-mes>{mes.nombre}</span>
         <span class="cal-nota">Un mes de contenido, de ejemplo</span>
       </figcaption>
       <ol class="cal-semana" aria-hidden="true">
         {semana.map((d, i) => <li title={semanaLarga[i]}>{d}</li>)}
       </ol>
-      <ol class="cal-dias" data-cal-dias style={`--desfase: ${desfase + 1}`}>
+      <ol class="cal-dias" data-cal-dias style={`--desfase: ${mes.desfase + 1}`}>
         {
           dias.map((d) => {
             const tipo = tipoDelDia(d);
             return (
-              <li class="dia" data-dia={d} data-tipo={tipo ?? 'libre'} hidden={d > diasMes}>
+              <li class="dia" data-dia={d} data-tipo={tipo} hidden={d > mes.dias}>
                 <span class="dia-num">{d}</span>
-                {tipo && <Pieza tipo={tipo} variante={Math.floor(d / 3)} class="dia-pieza" />}
+                {tipo !== 'libre' && <Pieza tipo={tipo} variante={Math.floor(d / 2)} class="dia-pieza" />}
+                {llevaHistoria(d) && <span class="dia-historia" aria-hidden="true" />}
               </li>
             );
           })
         }
       </ol>
-      <div class="cal-anuncio" style={`--desde: ${anuncio.desde}; --hasta: ${anuncio.hasta}`}>
-        <span class="anuncio-pista"><span class="anuncio-barra" data-anuncio-barra></span></span>
-        <span class="anuncio-texto">Anuncio en Facebook, del {anuncio.desde} al {anuncio.hasta}</span>
+      <div class="cal-campania" style={`--desde: ${campania.desde}; --hasta: ${campania.hasta}`}>
+        <span class="campania-pista"><span class="campania-barra" data-campania></span></span>
+        <span class="campania-texto">Campaña en Facebook, del {campania.desde} al {campania.hasta}</span>
       </div>
       <ul class="cal-leyenda">
-        <li><Pieza tipo="post" class="ley" /> Publicación</li>
+        <li><Pieza class="ley" /> Publicación</li>
+        <li><Pieza tipo="carrusel" variante={1} class="ley" /> Carrusel</li>
+        <li><Pieza tipo="video" class="ley" /> Video</li>
         <li><Pieza tipo="historia" class="ley" /> Historia</li>
-        <li><Pieza tipo="reel" class="ley" /> Reel</li>
+        <li><Pieza tipo="pagada" variante={1} class="ley" /> Pagada en Facebook</li>
       </ul>
     </figure>
   </div>
@@ -121,7 +110,7 @@ const anuncio = { desde: 8, hasta: 21 };
     margin-top: 24px;
     font-size: var(--t-1);
     color: var(--niebla);
-    max-width: 46ch;
+    max-width: 48ch;
   }
 
   .hero-acciones {
@@ -206,18 +195,40 @@ const anuncio = { desde: 8, hasta: 21 };
     width: 66%;
   }
 
-  .motion .dia :global(.dia-pieza) {
+  /* Historia extra del día: aro pequeño en la esquina superior derecha. */
+  .dia-historia {
+    position: absolute;
+    top: 6%;
+    right: 6%;
+    width: 22%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--naranja);
+    background: var(--puerto);
+  }
+
+  /* El día de hoy (lo marca scripts/motion.ts): contorno blanco. */
+  .dia.hoy {
+    box-shadow: 0 0 0 2px var(--blanco);
+  }
+
+  .dia.hoy .dia-num {
+    color: var(--blanco);
+  }
+
+  .motion .dia :global(.dia-pieza),
+  .motion .dia-historia {
     opacity: 0;
     transform: scale(0.4);
   }
 
-  .cal-anuncio {
+  .cal-campania {
     display: grid;
     gap: 6px;
     margin-top: 16px;
   }
 
-  .anuncio-pista {
+  .campania-pista {
     position: relative;
     display: block;
     height: 10px;
@@ -225,7 +236,7 @@ const anuncio = { desde: 8, hasta: 21 };
     background: rgb(255 255 255 / 0.08);
   }
 
-  .anuncio-barra {
+  .campania-barra {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -236,11 +247,11 @@ const anuncio = { desde: 8, hasta: 21 };
     transform-origin: left;
   }
 
-  .motion .anuncio-barra {
+  .motion .campania-barra {
     transform: scaleX(0);
   }
 
-  .anuncio-texto {
+  .campania-texto {
     font-size: 0.9rem;
     color: var(--niebla);
   }

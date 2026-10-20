@@ -1,0 +1,221 @@
+---
+import Pieza, { type TipoPieza } from './Pieza.astro';
+
+// Un perfil de Instagram ilustrativo que se va llenando mientras bajas: al terminar el recorrido se ve un
+// mes completo. scripts/motion.ts liga el avance del scroll con las piezas visibles. Sin JS o con
+// movimiento reducido se ve el perfil completo.
+const tipos: TipoPieza[] = ['post', 'carrusel', 'video', 'post', 'pagada', 'carrusel', 'post', 'video', 'post', 'carrusel', 'post', 'pagada'];
+const semanas = [
+  'Empieza el mes: tu perfil retoma el ritmo.',
+  'Cada pieza sigue la misma línea gráfica.',
+  'Se nota la constancia: siempre hay algo nuevo.',
+  'Al cerrar el mes, tu perfil se ve activo y ordenado.',
+];
+---
+
+<section class="perfil-seccion" data-perfil aria-labelledby="perfil-titulo">
+  <div class="perfil-escena">
+    <div class="envoltura perfil-rejilla">
+      <div class="perfil-texto">
+        <h2 id="perfil-titulo" class="cinetico">Tu perfil, semana a semana</h2>
+        <p class="semana-num" aria-hidden="true">
+          Semana <span data-semana>4</span> de 4
+        </p>
+        <ol class="semanas">
+          {
+            semanas.map((s, i) => (
+              <li data-semana-texto={i + 1}>
+                <span class="visualmente-oculto">Semana {i + 1}: </span>
+                {s}
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div class="perfil" aria-hidden="true">
+        <div class="perfil-cabecera">
+          <span class="perfil-avatar"></span>
+          <span class="perfil-datos">
+            <span class="perfil-nombre">Tu negocio</span>
+            <span class="perfil-barras"><i></i><i></i><i></i></span>
+          </span>
+        </div>
+        <ul class="perfil-cuadricula">
+          {
+            tipos.map((t, i) => (
+              <li data-pieza-perfil>
+                <Pieza tipo={t} variante={i + 1} class="perfil-pieza" />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Sección alta con una escena fija: el recorrido del scroll es la línea de tiempo del mes. */
+  .perfil-seccion {
+    position: relative;
+  }
+
+  :global(.motion) .perfil-seccion {
+    height: 260svh;
+  }
+
+  .perfil-escena {
+    padding: clamp(56px, 8vw, 96px) 0;
+  }
+
+  :global(.motion) .perfil-escena {
+    position: sticky;
+    top: var(--cabecera);
+    min-height: calc(100svh - var(--cabecera));
+    display: grid;
+    align-items: center;
+    padding: 24px 0;
+  }
+
+  .perfil-rejilla {
+    display: grid;
+    gap: 28px;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .perfil-rejilla {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+      gap: 64px;
+    }
+  }
+
+  .semana-num {
+    margin-top: 18px;
+    font-family: var(--display);
+    font-size: var(--t-3);
+    font-weight: 780;
+    font-stretch: 112%;
+    color: var(--naranja-texto);
+    display: none;
+  }
+
+  :global(.motion) .semana-num {
+    display: block;
+  }
+
+  .semanas {
+    margin: 16px 0 0;
+    padding-left: 1.2em;
+    display: grid;
+    gap: 8px;
+    color: var(--gris);
+    font-size: var(--t-1);
+  }
+
+  /* Con animación solo se ve el texto de la semana actual. */
+  :global(.motion) .semanas {
+    list-style: none;
+    padding: 0;
+    min-height: 3.4em;
+  }
+
+  :global(.motion) .semanas li {
+    display: none;
+  }
+
+  :global(.motion) .semanas li.activa {
+    display: block;
+  }
+
+  .perfil {
+    background: var(--blanco);
+    border-radius: 28px;
+    padding: clamp(14px, 2vw, 22px);
+    box-shadow: 0 30px 60px -34px rgb(13 26 42 / 0.5);
+    width: min(100%, 420px);
+    justify-self: center;
+  }
+
+  .perfil-cabecera {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .perfil-avatar {
+    width: 52px;
+    height: 52px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--tinta);
+    box-shadow: 0 0 0 3px var(--blanco), 0 0 0 5px var(--naranja);
+  }
+
+  .perfil-datos {
+    display: grid;
+    gap: 6px;
+    flex: 1;
+  }
+
+  .perfil-nombre {
+    font-weight: 700;
+  }
+
+  .perfil-barras {
+    display: flex;
+    gap: 8px;
+  }
+
+  .perfil-barras i {
+    height: 8px;
+    flex: 1;
+    border-radius: 99px;
+    background: var(--linea);
+  }
+
+  .perfil-cuadricula {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .perfil-cuadricula li {
+    aspect-ratio: 1;
+    background: var(--papel);
+    border-radius: 6px;
+  }
+
+  .perfil-cuadricula :global(.perfil-pieza) {
+    border-radius: 6px;
+  }
+
+  /* Con animación, cada pieza aparece cuando el scroll la alcanza (clase .visible desde motion.ts). */
+  :global(.motion) .perfil-cuadricula :global(.perfil-pieza) {
+    opacity: 0;
+    transform: scale(0.5);
+    transition:
+      opacity 0.3s ease,
+      transform 0.45s cubic-bezier(0.3, 1.6, 0.5, 1);
+  }
+
+  :global(.motion) .perfil-cuadricula li:global(.visible) :global(.perfil-pieza) {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 899px) {
+    :global(.motion) .perfil {
+      width: min(100%, 300px);
+    }
+
+    :global(.motion) .perfil-texto h2 {
+      font-size: var(--t-3);
+    }
+  }
+</style>

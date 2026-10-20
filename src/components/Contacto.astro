@@ -4,12 +4,19 @@ import { contacto } from '../data/fj';
 
 // Sin servidor: el formulario arma un mensaje y abre WhatsApp con él. No se guarda nada.
 // El formulario con servidor (Cloudflare + antispam) es de la fase 3.
+interface Props {
+  /** En la página de contacto el título es el h1. */
+  principal?: boolean;
+}
+
+const { principal = false } = Astro.props;
+const Titulo = principal ? 'h1' : 'h2';
 ---
 
 <section id="contacto" class="contacto" aria-labelledby="contacto-titulo">
   <div class="envoltura contacto-rejilla">
     <div class="contacto-texto">
-      <h2 id="contacto-titulo" class="cinetico">Cuéntame tu proyecto</h2>
+      <Titulo id="contacto-titulo" class="cinetico">Cuéntame tu proyecto</Titulo>
       <p>
         No manejamos precios de lista: cada negocio es distinto. Platícame qué necesitas y te propongo un plan a tu
         medida.

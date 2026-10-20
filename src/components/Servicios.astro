@@ -11,17 +11,19 @@ import { url } from '../data/fj';
         <h3>Contenido y redes sociales</h3>
         <p>Nos encargamos de tu Facebook e Instagram de principio a fin, cada mes.</p>
         <ul class="srv-lista">
-          <li>Publicaciones de cada mes</li>
-          <li>Historias y reels</li>
+          <li>Publicaciones y carruseles</li>
+          <li>Videos e historias</li>
           <li>Diseño con la imagen de tu marca</li>
-          <li>Calendario planeado antes de que empiece el mes</li>
+          <li>Fotos de tu negocio</li>
         </ul>
         <p class="srv-para">Para profesionales de la salud, restaurantes y negocios locales.</p>
+        <a class="srv-enlace srv-enlace-claro" href={url('redes-sociales/')}>Conoce el servicio de redes</a>
       </article>
 
       <article class="srv srv-anuncios">
-        <h3>Anuncios en Facebook</h3>
-        <p>Campañas para que te encuentren personas de tu zona que pueden ser tus clientes.</p>
+        <h3>Publicaciones pagadas en Facebook</h3>
+        <p>Para que tu contenido llegue a personas de tu zona que pueden ser tus clientes.</p>
+        <a class="srv-enlace srv-enlace-tinta" href={url('redes-sociales/#anuncios')}>Cómo funciona</a>
       </article>
 
       <article class="srv srv-web">
@@ -38,7 +40,7 @@ import { url } from '../data/fj';
           Tu negocio con un sitio propio: datos correctos, botón de WhatsApp y mapa para llegar. Se ve bien en
           cualquier celular.
         </p>
-        <a class="srv-enlace" href={url('#clientes')}>Ver el caso de Clínica Santa Clara</a>
+        <a class="srv-enlace" href={url('paginas-web/')}>Conoce el servicio de páginas web</a>
       </article>
     </div>
 
@@ -150,6 +152,14 @@ import { url } from '../data/fj';
     min-height: 44px;
     display: inline-flex;
     align-items: center;
+  }
+
+  .srv-enlace-claro {
+    color: var(--blanco);
+  }
+
+  .srv-enlace-tinta {
+    color: var(--tinta);
   }
 
   .navegador {

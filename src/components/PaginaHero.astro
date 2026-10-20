@@ -1,0 +1,77 @@
+---
+import { url } from '../data/fj';
+
+// Encabezado de las páginas interiores: título en líneas que suben al cargar (como el inicio).
+interface Props {
+  lineas: string[];
+  texto: string;
+  /** Destino del botón secundario, opcional. */
+  secundario?: { texto: string; href: string };
+}
+
+const { lineas, texto, secundario } = Astro.props;
+---
+
+<section class="pagina-hero" aria-labelledby="pagina-titulo">
+  <div class="envoltura">
+    <h1 id="pagina-titulo" class="hero-titulo">
+      {
+        lineas.map((l) => (
+          <span class="linea">
+            <span>{l}</span>
+          </span>
+        ))
+      }
+    </h1>
+    <p class="pagina-sub">{texto}</p>
+    <div class="pagina-acciones">
+      <a class="boton boton-principal" href={url('contacto/')}>Cuéntame tu proyecto</a>
+      {secundario && <a class="boton boton-secundario" href={secundario.href}>{secundario.texto}</a>}
+    </div>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .pagina-hero {
+    background: var(--tinta);
+    color: var(--blanco);
+    padding: clamp(48px, 8vw, 104px) 0 clamp(48px, 7vw, 88px);
+  }
+
+  .hero-titulo {
+    font-size: clamp(2.4rem, 1.2rem + 4.4vw, 5rem);
+    font-weight: 820;
+    font-stretch: 104%;
+    line-height: 0.96;
+    max-width: 16ch;
+  }
+
+  .linea {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+  }
+
+  .linea > span {
+    display: block;
+  }
+
+  :global(.motion) .linea > span {
+    transform: translateY(105%);
+  }
+
+  .pagina-sub {
+    margin-top: 22px;
+    font-size: var(--t-1);
+    color: var(--niebla);
+    max-width: 52ch;
+  }
+
+  .pagina-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+</style>

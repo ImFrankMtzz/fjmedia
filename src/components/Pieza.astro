@@ -1,30 +1,34 @@
 ---
-// Una pieza de contenido dibujada con formas: el vocabulario visual que se repite en el calendario,
-// el celular y el muro. Son ilustraciones, no trabajos reales de clientes.
-export type TipoPieza = 'post' | 'reel' | 'historia';
+// Una pieza de contenido dibujada con formas: el vocabulario visual que se repite en el calendario, el
+// celular, el muro y el perfil. Son ilustraciones, no trabajos reales de clientes.
+export type TipoPieza = 'post' | 'carrusel' | 'video' | 'historia' | 'pagada';
 
 interface Props {
-  tipo: TipoPieza;
+  tipo?: TipoPieza;
   variante?: number;
   class?: string;
 }
 
-const { tipo, variante = 0, class: extra } = Astro.props;
+const { tipo = 'post', variante = 0, class: extra } = Astro.props;
 const v = variante % 3;
+const conFormas = tipo === 'post' || tipo === 'pagada' || tipo === 'carrusel';
 ---
 
-<span class:list={['pieza', `pieza-${tipo}`, `v${v}`, extra]} aria-hidden="true">
-  {tipo === 'post' && v === 0 && <span class="forma circulo" />}
+<span class:list={['pieza', `pieza-${tipo}`, conFormas && `v${v}`, extra]} aria-hidden="true">
+  {conFormas && v === 0 && <span class="forma circulo" />}
   {
-    tipo === 'post' && v === 1 && (
+    conFormas && v === 1 && (
       <>
         <span class="forma barra b1" />
         <span class="forma barra b2" />
       </>
     )
   }
-  {tipo === 'post' && v === 2 && <span class="forma cuarto" />}
-  {tipo === 'reel' && <span class="forma play" />}
+  {conFormas && v === 2 && <span class="forma cuarto" />}
+  {tipo === 'carrusel' && <span class="puntos"><i /><i /><i /></span>}
+  {tipo === 'video' && <span class="forma play" />}
+  {tipo === 'historia' && <span class="forma nucleo" />}
+  {tipo === 'pagada' && <span class="sello" />}
 </span>
 
 <style>
@@ -37,29 +41,90 @@ const v = variante % 3;
     overflow: hidden;
   }
 
-  .pieza-post.v0 {
+  .v0 {
     background: var(--naranja);
   }
 
-  .pieza-post.v1 {
+  .v1 {
     background: var(--blanco);
     box-shadow: inset 0 0 0 1px var(--linea);
   }
 
-  .pieza-post.v2 {
+  .v2 {
     background: var(--puerto-claro);
   }
 
-  .pieza-reel {
+  /* Carrusel: una segunda hoja asomando detrás y los puntos de paginación. */
+  .pieza-carrusel {
+    overflow: visible;
+    box-shadow: 4px -4px 0 0 rgb(255 255 255 / 0.35);
+  }
+
+  .puntos {
+    position: absolute;
+    left: 50%;
+    bottom: 8%;
+    translate: -50% 0;
+    display: flex;
+    gap: 3px;
+  }
+
+  .puntos i {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--tinta);
+    opacity: 0.45;
+  }
+
+  .puntos i:first-child {
+    opacity: 1;
+  }
+
+  .pieza-video {
     background: var(--tinta);
     box-shadow: inset 0 0 0 2px var(--puerto-claro);
+  }
+
+  .play {
+    left: 38%;
+    top: 30%;
+    width: 30%;
+    height: 40%;
+    background: var(--naranja);
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
   }
 
   .pieza-historia {
     background: transparent;
     border-radius: 50%;
     box-shadow: inset 0 0 0 3px var(--naranja);
-    scale: 0.82;
+  }
+
+  .nucleo {
+    inset: 22%;
+    border-radius: 50%;
+    background: var(--puerto-claro);
+  }
+
+  /* Pagada: marco naranja y sello en la esquina, "esta se promociona". */
+  .pieza-pagada {
+    box-shadow: inset 0 0 0 3px var(--naranja);
+  }
+
+  .pieza-pagada.v0 {
+    box-shadow: inset 0 0 0 3px var(--blanco);
+  }
+
+  .sello {
+    position: absolute;
+    top: 8%;
+    right: 8%;
+    width: 26%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--blanco);
+    box-shadow: 0 0 0 2px var(--naranja);
   }
 
   .forma {
@@ -99,14 +164,5 @@ const v = variante % 3;
     aspect-ratio: 1;
     border-top-left-radius: 100%;
     background: var(--naranja);
-  }
-
-  .play {
-    left: 38%;
-    top: 30%;
-    width: 30%;
-    height: 40%;
-    background: var(--naranja);
-    clip-path: polygon(0 0, 100% 50%, 0 100%);
   }
 </style>

@@ -5,9 +5,16 @@ import { PREVIEW, contacto, url } from '../data/fj';
 interface Props {
   title: string;
   description: string;
+  /** Ruta de la página actual dentro del sitio, para marcarla en el menú (p. ej. 'redes-sociales/'). */
+  actual?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, actual = '' } = Astro.props;
+const menu = [
+  { ruta: 'redes-sociales/', texto: 'Redes sociales' },
+  { ruta: 'paginas-web/', texto: 'Páginas web' },
+  { ruta: '#clientes', texto: 'Clientes' },
+];
 const anio = new Date().getFullYear();
 ---
 
@@ -47,12 +54,18 @@ const anio = new Date().getFullYear();
         </a>
         <nav aria-label="Principal">
           <ul class="nav">
-            <li><a href={url('#como-creamos')}>Cómo creamos</a></li>
-            <li><a href={url('#servicios')}>Servicios</a></li>
-            <li><a href={url('#clientes')}>Clientes</a></li>
+            {
+              menu.map((m) => (
+                <li>
+                  <a href={url(m.ruta)} aria-current={m.ruta === actual ? 'page' : undefined}>
+                    {m.texto}
+                  </a>
+                </li>
+              ))
+            }
           </ul>
         </nav>
-        <a class="boton boton-principal cabecera-cta" href={url('#contacto')}>Contacto</a>
+        <a class="boton boton-principal cabecera-cta" href={url('contacto/')} aria-current={actual === 'contacto/' ? 'page' : undefined}>Contacto</a>
       </div>
     </header>
 
@@ -70,6 +83,9 @@ const anio = new Date().getFullYear();
         </p>
       </div>
     </footer>
+    <script>
+      import '../scripts/motion';
+    </script>
   </body>
 </html>
 
@@ -154,6 +170,11 @@ const anio = new Date().getFullYear();
 
   .nav a:hover {
     background: var(--puerto);
+  }
+
+  .nav a[aria-current='page'] {
+    box-shadow: inset 0 -3px 0 var(--naranja);
+    border-radius: 0;
   }
 
   .cabecera-cta {

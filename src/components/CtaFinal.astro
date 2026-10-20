@@ -1,0 +1,57 @@
+---
+import { url } from '../data/fj';
+
+interface Props {
+  titulo?: string;
+  texto?: string;
+}
+
+const {
+  titulo = '¿Platicamos de tu negocio?',
+  texto = 'No manejamos precios de lista: cada negocio es distinto. Cuéntame qué necesitas y te propongo un plan a tu medida.',
+} = Astro.props;
+---
+
+<section class="cta-final" aria-labelledby="cta-titulo">
+  <div class="envoltura cta-fila">
+    <div>
+      <h2 id="cta-titulo" class="cinetico">{titulo}</h2>
+      <p>{texto}</p>
+    </div>
+    <a class="boton boton-principal cta-boton" href={url('contacto/')}>Cuéntame tu proyecto</a>
+  </div>
+</section>
+
+<style>
+  .cta-final {
+    background: var(--tinta);
+    color: var(--blanco);
+    padding: clamp(56px, 8vw, 104px) 0;
+  }
+
+  .cta-fila {
+    display: grid;
+    gap: 28px;
+    align-items: end;
+  }
+
+  @media (min-width: 900px) {
+    .cta-fila {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 48px;
+    }
+  }
+
+  .cta-fila p {
+    margin-top: 16px;
+    color: var(--niebla);
+    font-size: var(--t-1);
+  }
+
+  .cta-boton {
+    justify-self: start;
+    min-height: 56px;
+    padding: 14px 28px;
+    font-size: var(--t-1);
+  }
+</style>
