@@ -7,8 +7,8 @@ export const PREVIEW = true;
 export const contacto = {
   /** WhatsApp de ventas en formato internacional sin signos, p. ej. "527531234567". Pendiente. */
   whatsapp: null as string | null,
-  /** Correo de ventas. Pendiente. */
-  email: null as string | null,
+  /** Correo de ventas, confirmado por Frank el 2026-10-20. */
+  email: 'fjmedia.mx@gmail.com' as string | null,
   ciudad: 'Lázaro Cárdenas, Michoacán',
 };
 

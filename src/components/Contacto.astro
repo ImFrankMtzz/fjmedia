@@ -27,7 +27,13 @@ const Titulo = principal ? 'h1' : 'h2';
         )
       }
       {!contacto.email && <Pendiente oscuro texto="correo de ventas." />}
-      {contacto.email && <a href={`mailto:${contacto.email}`}>{contacto.email}</a>}
+      {
+        contacto.email && (
+          <p class="correo">
+            También puedes escribirnos a <a href={`mailto:${contacto.email}`}>{contacto.email}</a>
+          </p>
+        )
+      }
     </div>
 
     <form class="formulario" data-contacto data-whatsapp={contacto.whatsapp ?? ''} novalidate>
@@ -84,6 +90,17 @@ const Titulo = principal ? 'h1' : 'h2';
   .contacto-texto p {
     color: var(--niebla);
     font-size: var(--t-1);
+  }
+
+  .contacto-texto .correo {
+    color: var(--blanco);
+  }
+
+  .correo a {
+    color: var(--blanco);
+    font-weight: 700;
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
   }
 
   .formulario {

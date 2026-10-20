@@ -77,6 +77,7 @@ const anio = new Date().getFullYear();
       <div class="envoltura pie-fila">
         <span class="marca" aria-hidden="true"><span class="marca-fj">FJ</span><span class="marca-media">MEDIA</span></span>
         <p>Contenido para redes sociales y páginas web desde {contacto.ciudad}.</p>
+        {contacto.email && <a class="pie-correo" href={`mailto:${contacto.email}`}>{contacto.email}</a>}
         <p class="pie-legal">
           © {anio} FJ Media
           {PREVIEW && <> <a href={url('cambios/')}>Bitácora de cambios</a></>}
@@ -206,6 +207,14 @@ const anio = new Date().getFullYear();
 
   .pie .marca {
     color: var(--blanco);
+  }
+
+  .pie-correo {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--blanco);
+    font-weight: 600;
   }
 
   .pie-legal a {
