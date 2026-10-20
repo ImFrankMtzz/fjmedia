@@ -44,7 +44,7 @@ const semanaLarga = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sáb
             return (
               <li class="dia" data-dia={d} data-tipo={tipo} hidden={d > mes.dias}>
                 <span class="dia-num">{d}</span>
-                {tipo !== 'libre' && <Pieza tipo={tipo} variante={tipo === 'post' ? 0 : Math.floor(d / 2)} class="dia-pieza" />}
+                {tipo !== 'libre' && <Pieza tipo={tipo} variante={Math.floor(d / 2)} class="dia-pieza" />}
                 {llevaHistoria(d) && <span class="dia-historia" aria-hidden="true" />}
               </li>
             );
@@ -56,7 +56,10 @@ const semanaLarga = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sáb
         <span class="campania-texto">Campaña en Facebook, del {campania.desde} al {campania.hasta}</span>
       </div>
       <ul class="cal-leyenda">
-        <li><Pieza class="ley" /> Publicación</li>
+        <li>
+          <span class="ley-grupo"><Pieza class="ley" /><Pieza variante={1} class="ley" /><Pieza variante={2} class="ley" /></span>
+          Publicación
+        </li>
         <li><Pieza tipo="carrusel" variante={1} class="ley" /> Carrusel</li>
         <li><Pieza tipo="video" class="ley" /> Video</li>
         <li><Pieza tipo="historia" class="ley" /> Historia</li>
@@ -270,6 +273,11 @@ const semanaLarga = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sáb
     display: inline-flex;
     align-items: center;
     gap: 8px;
+  }
+
+  .ley-grupo {
+    display: inline-flex;
+    gap: 3px;
   }
 
   .cal-leyenda :global(.ley) {
