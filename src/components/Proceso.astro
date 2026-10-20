@@ -1,5 +1,6 @@
 ---
 import Pendiente from './Pendiente.astro';
+import { fundador } from '../data/fj';
 
 const pasos = [
   { titulo: 'Platicamos', texto: 'Me cuentas de tu negocio, a quién quieres llegar y qué necesitas.' },
@@ -26,8 +27,11 @@ const pasos = [
 
     <div class="detras">
       <h3>Quién está detrás de FJ Media</h3>
-      <p>FJ Media trabaja desde Lázaro Cárdenas, Michoacán, con negocios de la región.</p>
-      <Pendiente texto="tu nombre, una foto tuya y dos o tres líneas sobre ti." />
+      <p>
+        FJ Media trabaja desde Lázaro Cárdenas, Michoacán, con negocios de la región. Detrás está{' '}
+        <strong>{fundador.nombre}</strong>.
+      </p>
+      <Pendiente texto="tu foto y dos o tres líneas sobre ti." />
     </div>
   </div>
 </section>

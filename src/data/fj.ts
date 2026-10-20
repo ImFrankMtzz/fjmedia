@@ -5,12 +5,21 @@
 export const PREVIEW = true;
 
 export const contacto = {
-  /** WhatsApp de ventas en formato internacional sin signos, p. ej. "527531234567". Pendiente. */
-  whatsapp: null as string | null,
+  /** WhatsApp de ventas en formato internacional sin signos (52 + lada + número), confirmado por Frank el 2026-10-20. */
+  whatsapp: '523329577642' as string | null,
   /** Correo de ventas, confirmado por Frank el 2026-10-20. */
   email: 'fjmedia.mx@gmail.com' as string | null,
   ciudad: 'Lázaro Cárdenas, Michoacán',
 };
+
+/** Redes de FJ Media, confirmadas por Frank el 2026-10-20. */
+export const redes = {
+  facebook: 'https://www.facebook.com/fjmediamx',
+  instagram: 'https://www.instagram.com/fjmedia.mx',
+};
+
+/** Persona detrás de FJ Media, confirmado por Frank el 2026-10-20. La foto y su presentación siguen pendientes. */
+export const fundador = { nombre: 'Francisco Javier Moreno Martínez' };
 
 export type Cliente = {
   nombre: string;
@@ -22,11 +31,11 @@ export type Cliente = {
   url?: string;
 };
 
-const redes = ['Facebook e Instagram', 'Publicaciones de cada mes', 'Anuncios en Facebook'];
+const serviciosRedes = ['Facebook e Instagram', 'Publicaciones de cada mes', 'Anuncios en Facebook'];
 
 export const clientes: Cliente[] = [
-  { nombre: 'Lipocosmedic', logo: { src: 'clientes/lipocosmedic.png', ancho: 226, alto: 360 }, servicios: redes },
-  { nombre: 'Laboratorio Santa María', logo: { src: 'clientes/laboratorio-santa-maria.png', ancho: 338, alto: 177 }, servicios: redes },
+  { nombre: 'Lipocosmedic', logo: { src: 'clientes/lipocosmedic.png', ancho: 226, alto: 360 }, servicios: serviciosRedes },
+  { nombre: 'Laboratorio Santa María', logo: { src: 'clientes/laboratorio-santa-maria.png', ancho: 338, alto: 177 }, servicios: serviciosRedes },
   {
     nombre: 'Clínica Santa Clara',
     nombreLargo: 'Centro Médico de Especialidades Santa Clara',
