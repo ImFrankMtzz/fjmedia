@@ -423,13 +423,23 @@ const plan = [
     align-content: center;
     gap: 12px;
     padding: 32px 0;
-    opacity: 0.35;
-    transition: opacity 0.4s ease;
+    /* Paso inactivo: gris que sigue cumpliendo AA (5:1 sobre papel), en vez de bajar la opacidad. */
+    --c-titulo: #5a6a7e;
+    --c-texto: #5a6a7e;
+    --c-num: #5a6a7e;
   }
 
   .paso.activo,
   :global(html:not(.motion)) .paso {
-    opacity: 1;
+    --c-titulo: var(--tinta);
+    --c-texto: var(--gris);
+    --c-num: var(--naranja-texto);
+  }
+
+  .paso h3,
+  .paso p,
+  .paso-num {
+    transition: color 0.4s ease;
   }
 
   @media (min-width: 900px) {
@@ -443,16 +453,17 @@ const plan = [
     font-weight: 800;
     font-stretch: 120%;
     font-size: var(--t-3);
-    color: var(--naranja-texto);
+    color: var(--c-num);
   }
 
   .paso h3 {
     font-size: var(--t-3);
     font-weight: 760;
+    color: var(--c-titulo);
   }
 
   .paso p {
-    color: var(--gris);
+    color: var(--c-texto);
     font-size: var(--t-1);
     max-width: 40ch;
   }
