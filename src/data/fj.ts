@@ -25,7 +25,7 @@ export type Cliente = {
 const redes = ['Facebook e Instagram', 'Publicaciones de cada mes', 'Anuncios en Facebook'];
 
 export const clientes: Cliente[] = [
-  { nombre: 'Lipocosmedic', logo: null, servicios: redes },
+  { nombre: 'Lipocosmedic', logo: 'clientes/lipocosmedic.png', servicios: redes },
   { nombre: 'Laboratorio Santa María', logo: 'clientes/laboratorio-santa-maria.png', servicios: redes },
   {
     nombre: 'Clínica Santa Clara',
