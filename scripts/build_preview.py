@@ -2,11 +2,11 @@
 import html
 import shutil
 import subprocess
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from zoneinfo import ZoneInfo
 
-TZ = ZoneInfo("America/Mexico_City")
+# Michoacán no tiene horario de verano desde 2022: UTC-6 fijo.
+TZ = timezone(timedelta(hours=-6))
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "out"
 
