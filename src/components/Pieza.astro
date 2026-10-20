@@ -1,0 +1,112 @@
+---
+// Una pieza de contenido dibujada con formas: el vocabulario visual que se repite en el calendario,
+// el celular y el muro. Son ilustraciones, no trabajos reales de clientes.
+export type TipoPieza = 'post' | 'reel' | 'historia';
+
+interface Props {
+  tipo: TipoPieza;
+  variante?: number;
+  class?: string;
+}
+
+const { tipo, variante = 0, class: extra } = Astro.props;
+const v = variante % 3;
+---
+
+<span class:list={['pieza', `pieza-${tipo}`, `v${v}`, extra]} aria-hidden="true">
+  {tipo === 'post' && v === 0 && <span class="forma circulo" />}
+  {
+    tipo === 'post' && v === 1 && (
+      <>
+        <span class="forma barra b1" />
+        <span class="forma barra b2" />
+      </>
+    )
+  }
+  {tipo === 'post' && v === 2 && <span class="forma cuarto" />}
+  {tipo === 'reel' && <span class="forma play" />}
+</span>
+
+<style>
+  .pieza {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: var(--radio-chico);
+    overflow: hidden;
+  }
+
+  .pieza-post.v0 {
+    background: var(--naranja);
+  }
+
+  .pieza-post.v1 {
+    background: var(--blanco);
+    box-shadow: inset 0 0 0 1px var(--linea);
+  }
+
+  .pieza-post.v2 {
+    background: var(--puerto-claro);
+  }
+
+  .pieza-reel {
+    background: var(--tinta);
+    box-shadow: inset 0 0 0 2px var(--puerto-claro);
+  }
+
+  .pieza-historia {
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 3px var(--naranja);
+    scale: 0.82;
+  }
+
+  .forma {
+    position: absolute;
+  }
+
+  .circulo {
+    inset: 28% 18% auto auto;
+    width: 46%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--tinta);
+  }
+
+  .barra {
+    left: 16%;
+    height: 12%;
+    border-radius: 99px;
+    background: var(--tinta);
+  }
+
+  .b1 {
+    top: 30%;
+    width: 64%;
+  }
+
+  .b2 {
+    top: 52%;
+    width: 40%;
+    background: var(--naranja);
+  }
+
+  .cuarto {
+    right: 0;
+    bottom: 0;
+    width: 60%;
+    aspect-ratio: 1;
+    border-top-left-radius: 100%;
+    background: var(--naranja);
+  }
+
+  .play {
+    left: 38%;
+    top: 30%;
+    width: 30%;
+    height: 40%;
+    background: var(--naranja);
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+</style>

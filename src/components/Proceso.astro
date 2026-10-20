@@ -1,0 +1,113 @@
+---
+import Pendiente from './Pendiente.astro';
+
+const pasos = [
+  { titulo: 'Platicamos', texto: 'Me cuentas de tu negocio, a quién quieres llegar y qué necesitas.' },
+  { titulo: 'Te propongo un plan', texto: 'Cada negocio es distinto, así que el plan y el costo se arman a tu medida.' },
+  { titulo: 'Creamos y publicamos', texto: 'Arrancamos con tu contenido, tus anuncios o tu página web.' },
+];
+---
+
+<section class="proceso" aria-labelledby="proceso-titulo">
+  <div class="envoltura">
+    <h2 id="proceso-titulo" class="cinetico">Cómo empezamos a trabajar</h2>
+    <div class="proceso-linea" aria-hidden="true"><span data-linea></span></div>
+    <ol class="proceso-pasos">
+      {
+        pasos.map((p, i) => (
+          <li>
+            <span class="num" aria-hidden="true">{i + 1}</span>
+            <h3>{p.titulo}</h3>
+            <p>{p.texto}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="detras">
+      <h3>Quién está detrás de FJ Media</h3>
+      <p>FJ Media trabaja desde Lázaro Cárdenas, Michoacán, con negocios de la región.</p>
+      <Pendiente texto="tu nombre, una foto tuya y dos o tres líneas sobre ti." />
+    </div>
+  </div>
+</section>
+
+<style>
+  .proceso {
+    padding: clamp(64px, 9vw, 120px) 0;
+  }
+
+  .proceso-linea {
+    height: 4px;
+    margin-top: clamp(28px, 4vw, 48px);
+    background: var(--linea);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .proceso-linea span {
+    display: block;
+    height: 100%;
+    background: var(--naranja);
+    transform-origin: left;
+  }
+
+  :global(.motion) .proceso-linea span {
+    transform: scaleX(0);
+  }
+
+  .proceso-pasos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 28px;
+    margin-top: 24px;
+  }
+
+  @media (min-width: 800px) {
+    .proceso-pasos {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .proceso-pasos li {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+  }
+
+  .num {
+    font-family: var(--display);
+    font-weight: 800;
+    font-stretch: 120%;
+    font-size: var(--t-3);
+    color: var(--naranja-texto);
+  }
+
+  .proceso-pasos h3 {
+    font-size: var(--t-2);
+    font-weight: 760;
+  }
+
+  .proceso-pasos p {
+    color: var(--gris);
+  }
+
+  .detras {
+    margin-top: clamp(48px, 7vw, 88px);
+    display: grid;
+    gap: 12px;
+    justify-items: start;
+  }
+
+  .detras h3 {
+    font-size: var(--t-3);
+    font-weight: 760;
+  }
+
+  .detras p {
+    color: var(--gris);
+    font-size: var(--t-1);
+  }
+</style>

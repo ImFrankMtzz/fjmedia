@@ -1,0 +1,134 @@
+---
+import Pendiente from './Pendiente.astro';
+import { contacto } from '../data/fj';
+
+// Sin servidor: el formulario arma un mensaje y abre WhatsApp con él. No se guarda nada.
+// El formulario con servidor (Cloudflare + antispam) es de la fase 3.
+---
+
+<section id="contacto" class="contacto" aria-labelledby="contacto-titulo">
+  <div class="envoltura contacto-rejilla">
+    <div class="contacto-texto">
+      <h2 id="contacto-titulo" class="cinetico">Cuéntame tu proyecto</h2>
+      <p>
+        No manejamos precios de lista: cada negocio es distinto. Platícame qué necesitas y te propongo un plan a tu
+        medida.
+      </p>
+      {
+        !contacto.whatsapp && (
+          <Pendiente oscuro texto="número de WhatsApp de ventas de FJ Media. Mientras falte, el botón no envía." />
+        )
+      }
+      {!contacto.email && <Pendiente oscuro texto="correo de ventas." />}
+      {contacto.email && <a href={`mailto:${contacto.email}`}>{contacto.email}</a>}
+    </div>
+
+    <form class="formulario" data-contacto data-whatsapp={contacto.whatsapp ?? ''} novalidate>
+      <div class="campo">
+        <label for="f-nombre">Tu nombre</label>
+        <input id="f-nombre" name="nombre" autocomplete="name" required />
+      </div>
+      <div class="campo">
+        <label for="f-giro">¿A qué se dedica tu negocio?</label>
+        <input id="f-giro" name="giro" placeholder="Por ejemplo: restaurante" required />
+      </div>
+      <div class="campo">
+        <label for="f-quiero">¿Qué quieres lograr?</label>
+        <textarea id="f-quiero" name="quiero" rows="4" placeholder="Por ejemplo: que mis redes se vean activas"
+        ></textarea>
+      </div>
+      <button class="boton boton-principal" type="submit">Enviar por WhatsApp</button>
+      <p class="estado" role="status" data-estado></p>
+      <p class="privacidad">No guardamos tus datos: el mensaje se abre en tu WhatsApp y tú decides si lo envías.</p>
+    </form>
+  </div>
+</section>
+
+<script>
+  import '../scripts/contacto';
+</script>
+
+<style>
+  .contacto {
+    background: var(--tinta);
+    color: var(--blanco);
+    padding: clamp(64px, 9vw, 120px) 0;
+  }
+
+  .contacto-rejilla {
+    display: grid;
+    gap: 40px;
+  }
+
+  @media (min-width: 900px) {
+    .contacto-rejilla {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 64px;
+    }
+  }
+
+  .contacto-texto {
+    display: grid;
+    gap: 18px;
+    align-content: start;
+    justify-items: start;
+  }
+
+  .contacto-texto p {
+    color: var(--niebla);
+    font-size: var(--t-1);
+  }
+
+  .formulario {
+    display: grid;
+    gap: 18px;
+    background: var(--puerto);
+    padding: clamp(20px, 3vw, 32px);
+    border-radius: var(--radio);
+  }
+
+  .campo {
+    display: grid;
+    gap: 6px;
+  }
+
+  label {
+    font-weight: 600;
+  }
+
+  input,
+  textarea {
+    font: inherit;
+    color: var(--tinta);
+    background: var(--blanco);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 12px 14px;
+    min-height: 48px;
+    width: 100%;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #6b7a8c;
+  }
+
+  input[aria-invalid='true'] {
+    border-color: #ff9a6b;
+  }
+
+  .formulario .boton {
+    justify-self: start;
+  }
+
+  .estado {
+    min-height: 1.6em;
+    color: #ffd2b8;
+    font-weight: 600;
+  }
+
+  .privacidad {
+    font-size: 0.9rem;
+    color: var(--niebla);
+  }
+</style>

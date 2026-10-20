@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import ComoCreamos from '../components/ComoCreamos.astro';
+import Servicios from '../components/Servicios.astro';
+import Muro from '../components/Muro.astro';
+import Clientes from '../components/Clientes.astro';
+import Proceso from '../components/Proceso.astro';
+import Contacto from '../components/Contacto.astro';
+---
+
+<Base
+  title="FJ Media: contenido para redes sociales y páginas web en Lázaro Cárdenas"
+  description="Planeamos, diseñamos y publicamos el contenido de Facebook e Instagram de tu negocio, manejamos tus anuncios y hacemos tu página web."
+>
+  <Hero />
+  <ComoCreamos />
+  <Muro />
+  <Servicios />
+  <Clientes />
+  <Proceso />
+  <Contacto />
+</Base>
+
+<script>
+  import '../scripts/motion';
+</script>

@@ -1,0 +1,268 @@
+---
+import Pieza, { type TipoPieza } from './Pieza.astro';
+import { url } from '../data/fj';
+
+// El calendario muestra un mes de trabajo ilustrativo. El mes y el día en que empieza se calculan al
+// compilar y se corrigen en el navegador (scripts/motion.ts), para que nunca se vea un mes viejo.
+const hoy = new Date();
+const anio = hoy.getFullYear();
+const mes = hoy.getMonth();
+const nombreMes = hoy.toLocaleDateString('es-MX', { month: 'long' });
+const diasMes = new Date(anio, mes + 1, 0).getDate();
+const desfase = (new Date(anio, mes, 1).getDay() + 6) % 7; // lunes = 0
+
+function tipoDelDia(d: number): TipoPieza | null {
+  if (d % 5 === 0) return 'reel';
+  if (d % 3 === 1) return 'post';
+  if (d % 4 === 2) return 'historia';
+  return null;
+}
+
+const dias = Array.from({ length: 31 }, (_, i) => i + 1);
+const semana = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+const semanaLarga = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+// La campaña ilustrativa corre del día 8 al 21.
+const anuncio = { desde: 8, hasta: 21 };
+---
+
+<section class="hero" aria-labelledby="hero-titulo">
+  <div class="envoltura hero-rejilla">
+    <div class="hero-texto">
+      <h1 id="hero-titulo" class="hero-titulo">
+        <span class="linea"><span>Tus redes,</span></span>
+        <span class="linea"><span>activas todo</span></span>
+        <span class="linea"><span>el mes.</span></span>
+      </h1>
+      <p class="hero-sub">
+        En FJ Media planeamos, diseñamos y publicamos el contenido de Facebook e Instagram de tu negocio, y
+        manejamos tus anuncios. También hacemos tu página web.
+      </p>
+      <div class="hero-acciones">
+        <a class="boton boton-principal" href={url('#contacto')}>Cuéntame tu proyecto</a>
+        <a class="boton boton-secundario" href={url('#como-creamos')}>Ver cómo trabajamos</a>
+      </div>
+    </div>
+
+    <figure class="calendario" aria-label="Ejemplo de un mes de contenido">
+      <figcaption class="cal-cabecera">
+        <span class="cal-mes" data-cal-mes>{nombreMes}</span>
+        <span class="cal-nota">Un mes de contenido, de ejemplo</span>
+      </figcaption>
+      <ol class="cal-semana" aria-hidden="true">
+        {semana.map((d, i) => <li title={semanaLarga[i]}>{d}</li>)}
+      </ol>
+      <ol class="cal-dias" data-cal-dias style={`--desfase: ${desfase + 1}`}>
+        {
+          dias.map((d) => {
+            const tipo = tipoDelDia(d);
+            return (
+              <li class="dia" data-dia={d} data-tipo={tipo ?? 'libre'} hidden={d > diasMes}>
+                <span class="dia-num">{d}</span>
+                {tipo && <Pieza tipo={tipo} variante={Math.floor(d / 3)} class="dia-pieza" />}
+              </li>
+            );
+          })
+        }
+      </ol>
+      <div class="cal-anuncio" style={`--desde: ${anuncio.desde}; --hasta: ${anuncio.hasta}`}>
+        <span class="anuncio-pista"><span class="anuncio-barra" data-anuncio-barra></span></span>
+        <span class="anuncio-texto">Anuncio en Facebook, del {anuncio.desde} al {anuncio.hasta}</span>
+      </div>
+      <ul class="cal-leyenda">
+        <li><Pieza tipo="post" class="ley" /> Publicación</li>
+        <li><Pieza tipo="historia" class="ley" /> Historia</li>
+        <li><Pieza tipo="reel" class="ley" /> Reel</li>
+      </ul>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: var(--tinta);
+    color: var(--blanco);
+    padding: clamp(40px, 7vw, 96px) 0 clamp(56px, 8vw, 112px);
+  }
+
+  .hero-rejilla {
+    display: grid;
+    gap: clamp(40px, 6vw, 72px);
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .hero-rejilla {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    }
+  }
+
+  .hero-titulo {
+    font-size: clamp(2.6rem, 1.4rem + 4.6vw, 5.4rem);
+    font-weight: 820;
+    font-stretch: 104%;
+    line-height: 0.96;
+  }
+
+  .linea {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+  }
+
+  .linea > span {
+    display: block;
+  }
+
+  .motion .linea > span {
+    transform: translateY(105%);
+  }
+
+  .hero-sub {
+    margin-top: 24px;
+    font-size: var(--t-1);
+    color: var(--niebla);
+    max-width: 46ch;
+  }
+
+  .hero-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .calendario {
+    margin: 0;
+    background: var(--puerto);
+    border-radius: var(--radio);
+    padding: clamp(14px, 2.4vw, 24px);
+  }
+
+  .cal-cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  .cal-mes {
+    font-family: var(--display);
+    font-size: var(--t-3);
+    font-weight: 760;
+    font-stretch: 112%;
+    text-transform: capitalize;
+  }
+
+  .cal-nota {
+    color: var(--niebla);
+    font-size: 0.9rem;
+  }
+
+  .cal-semana,
+  .cal-dias {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: clamp(4px, 0.8vw, 8px);
+  }
+
+  .cal-semana {
+    color: var(--niebla);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .dia {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: var(--radio-chico);
+    background: rgb(255 255 255 / 0.04);
+  }
+
+  .dia:first-child {
+    grid-column-start: var(--desfase);
+  }
+
+  .dia-num {
+    position: absolute;
+    top: 3px;
+    left: 5px;
+    z-index: 1;
+    font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+    font-weight: 600;
+    color: var(--niebla);
+  }
+
+  .dia :global(.dia-pieza) {
+    position: absolute;
+    right: 9%;
+    bottom: 9%;
+    width: 66%;
+  }
+
+  .motion .dia :global(.dia-pieza) {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  .cal-anuncio {
+    display: grid;
+    gap: 6px;
+    margin-top: 16px;
+  }
+
+  .anuncio-pista {
+    position: relative;
+    display: block;
+    height: 10px;
+    border-radius: 99px;
+    background: rgb(255 255 255 / 0.08);
+  }
+
+  .anuncio-barra {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc((var(--desde) - 1) / 31 * 100%);
+    width: calc((var(--hasta) - var(--desde) + 1) / 31 * 100%);
+    border-radius: 99px;
+    background: var(--naranja);
+    transform-origin: left;
+  }
+
+  .motion .anuncio-barra {
+    transform: scaleX(0);
+  }
+
+  .anuncio-texto {
+    font-size: 0.9rem;
+    color: var(--niebla);
+  }
+
+  .cal-leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+    font-size: 0.9rem;
+  }
+
+  .cal-leyenda li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cal-leyenda :global(.ley) {
+    width: 18px;
+    flex: none;
+  }
+</style>

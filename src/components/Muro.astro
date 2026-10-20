@@ -1,0 +1,107 @@
+---
+import Pieza, { type TipoPieza } from './Pieza.astro';
+import Pendiente from './Pendiente.astro';
+
+// Dos filas que corren en sentidos opuestos. Las piezas son ilustrativas hasta que haya material real
+// de los clientes (con su permiso). El contenido se duplica para que el ciclo no tenga cortes.
+const fila1: { tipo: TipoPieza; v: number; vertical?: boolean }[] = [
+  { tipo: 'post', v: 0 },
+  { tipo: 'reel', v: 0, vertical: true },
+  { tipo: 'post', v: 1 },
+  { tipo: 'post', v: 2 },
+  { tipo: 'reel', v: 0, vertical: true },
+  { tipo: 'post', v: 0 },
+  { tipo: 'post', v: 1 },
+];
+const fila2 = [...fila1].reverse().map((p, i) => ({ ...p, v: p.v + i }));
+---
+
+<section class="muro" aria-label="Muestra de piezas">
+  <div class="muro-pista">
+    {
+      [fila1, fila2].map((fila, f) => (
+        <div class:list={['muro-fila', { invertida: f === 1 }]}>
+          {[0, 1].map((copia) => (
+            <ul class="muro-grupo" aria-hidden={copia === 1 ? 'true' : undefined}>
+              {fila.map((p) => (
+                <li class:list={['muro-item', { vertical: p.vertical }]}>
+                  <Pieza tipo={p.tipo} variante={p.v} class="muro-pieza" />
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+  <div class="envoltura muro-nota">
+    <Pendiente texto="las piezas son ilustrativas; aquí van publicaciones y reels reales de los clientes, con su permiso." />
+  </div>
+</section>
+
+<style>
+  .muro {
+    padding: 8px 0 clamp(48px, 7vw, 96px);
+    overflow: hidden;
+  }
+
+  .muro-pista {
+    display: grid;
+    gap: 14px;
+  }
+
+  .muro-fila {
+    display: flex;
+    width: max-content;
+    animation: correr 46s linear infinite;
+  }
+
+  .muro-fila.invertida {
+    animation-direction: reverse;
+  }
+
+  .muro-pista:hover .muro-fila {
+    animation-play-state: paused;
+  }
+
+  .muro-grupo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 7px;
+    margin: 0;
+    list-style: none;
+  }
+
+  .muro-item {
+    width: clamp(120px, 16vw, 200px);
+  }
+
+  .muro-item.vertical {
+    width: clamp(90px, 11vw, 140px);
+  }
+
+  .muro-item.vertical :global(.muro-pieza) {
+    aspect-ratio: 9 / 16;
+  }
+
+  .muro-item :global(.muro-pieza) {
+    border-radius: 12px;
+  }
+
+  @keyframes correr {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .muro-fila {
+      animation: none;
+    }
+  }
+
+  .muro-nota {
+    margin-top: 20px;
+  }
+</style>

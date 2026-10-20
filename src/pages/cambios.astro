@@ -1,0 +1,86 @@
+---
+// Bitácora de la vista previa: el historial de git al momento de compilar, en hora del centro de México.
+import { execSync } from 'node:child_process';
+import Base from '../layouts/Base.astro';
+
+// Michoacán no tiene horario de verano desde 2022: UTC-6 fijo.
+const formato = new Intl.DateTimeFormat('es-MX', {
+  timeZone: 'Etc/GMT+6',
+  day: '2-digit',
+  month: 'short',
+  hour: '2-digit',
+  minute: '2-digit',
+});
+
+const cambios = execSync('git log -60 --pretty=%ct%x09%h%x09%s', { encoding: 'utf8' })
+  .trim()
+  .split('\n')
+  .filter(Boolean)
+  .map((linea) => {
+    const [ts, hash, asunto] = linea.split('\t');
+    return { cuando: formato.format(new Date(Number(ts) * 1000)), hash, asunto };
+  });
+
+const publicado = formato.format(new Date());
+---
+
+<Base title="Bitácora de cambios: FJ Media" description="Historial de cambios de la vista previa.">
+  <section class="envoltura bitacora">
+    <h1>Bitácora de cambios</h1>
+    <p>Lo más reciente arriba. Compilado el {publicado} (hora del centro).</p>
+    <ol>
+      {
+        cambios.map((c) => (
+          <li>
+            <time>{c.cuando}</time>
+            <span>{c.asunto}</span>
+            <code>{c.hash}</code>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+</Base>
+
+<style>
+  .bitacora {
+    padding: 48px 0 80px;
+  }
+
+  h1 {
+    font-size: var(--t-4);
+    font-weight: 780;
+  }
+
+  .bitacora > p {
+    color: var(--gris);
+    margin-top: 8px;
+  }
+
+  ol {
+    list-style: none;
+    margin: 28px 0 0;
+    padding: 0;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 1fr) auto;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid var(--linea);
+  }
+
+  time,
+  code {
+    color: var(--gris);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 560px) {
+    li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2px;
+    }
+  }
+</style>

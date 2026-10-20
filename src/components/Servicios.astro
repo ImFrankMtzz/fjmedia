@@ -1,0 +1,215 @@
+---
+import { url } from '../data/fj';
+---
+
+<section id="servicios" class="servicios" aria-labelledby="servicios-titulo">
+  <div class="envoltura">
+    <h2 id="servicios-titulo" class="cinetico">Lo que hacemos</h2>
+
+    <div class="servicios-rejilla">
+      <article class="srv srv-redes">
+        <h3>Contenido y redes sociales</h3>
+        <p>Nos encargamos de tu Facebook e Instagram de principio a fin, cada mes.</p>
+        <ul class="srv-lista">
+          <li>Publicaciones de cada mes</li>
+          <li>Historias y reels</li>
+          <li>Diseño con la imagen de tu marca</li>
+          <li>Calendario planeado antes de que empiece el mes</li>
+        </ul>
+        <p class="srv-para">Para profesionales de la salud, restaurantes y negocios locales.</p>
+      </article>
+
+      <article class="srv srv-anuncios">
+        <h3>Anuncios en Facebook</h3>
+        <p>Campañas para que te encuentren personas de tu zona que pueden ser tus clientes.</p>
+      </article>
+
+      <article class="srv srv-web">
+        <div class="navegador" aria-hidden="true">
+          <span class="nav-puntos"><i></i><i></i><i></i></span>
+          <span class="nav-cuerpo">
+            <span class="nb nb1"></span>
+            <span class="nb nb2"></span>
+            <span class="nb nb3"></span>
+          </span>
+        </div>
+        <h3>Páginas web</h3>
+        <p>
+          Tu negocio con un sitio propio: datos correctos, botón de WhatsApp y mapa para llegar. Se ve bien en
+          cualquier celular.
+        </p>
+        <a class="srv-enlace" href={url('#clientes')}>Ver el caso de Clínica Santa Clara</a>
+      </article>
+    </div>
+
+    <p class="srv-apps">
+      ¿Necesitas un sistema a la medida para tu negocio? También desarrollamos aplicaciones.
+      <a href={url('#contacto')}>Platiquemos</a>.
+    </p>
+  </div>
+</section>
+
+<style>
+  .servicios {
+    padding: clamp(64px, 9vw, 120px) 0;
+  }
+
+  .servicios-rejilla {
+    display: grid;
+    gap: 16px;
+    margin-top: clamp(24px, 4vw, 48px);
+  }
+
+  @media (min-width: 900px) {
+    .servicios-rejilla {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-rows: auto auto;
+    }
+
+    .srv-redes {
+      grid-column: 1 / span 7;
+      grid-row: 1 / span 2;
+    }
+
+    .srv-anuncios {
+      grid-column: 8 / span 5;
+    }
+
+    .srv-web {
+      grid-column: 8 / span 5;
+    }
+  }
+
+  .srv {
+    border-radius: var(--radio);
+    padding: clamp(22px, 3vw, 36px);
+    display: grid;
+    align-content: start;
+    gap: 12px;
+  }
+
+  .srv h3 {
+    font-size: var(--t-3);
+    font-weight: 760;
+    font-stretch: 105%;
+  }
+
+  .srv-redes {
+    background: var(--tinta);
+    color: var(--blanco);
+    gap: 18px;
+  }
+
+  .srv-redes h3 {
+    font-size: var(--t-4);
+    max-width: 12ch;
+  }
+
+  .srv-redes > p {
+    color: var(--niebla);
+    font-size: var(--t-1);
+  }
+
+  .srv-lista {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 2px;
+  }
+
+  .srv-lista li {
+    padding: 12px 0;
+    border-top: 1px solid var(--puerto-claro);
+    font-size: var(--t-1);
+    font-weight: 600;
+  }
+
+  .srv-redes .srv-para {
+    color: var(--blanco);
+    margin-top: auto;
+  }
+
+  .srv-anuncios {
+    background: var(--naranja);
+    color: var(--tinta);
+  }
+
+  .srv-web {
+    background: var(--blanco);
+    border: 1px solid var(--linea);
+  }
+
+  .srv-web p {
+    color: var(--gris);
+  }
+
+  .srv-enlace {
+    font-weight: 700;
+    color: var(--naranja-texto);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .navegador {
+    border-radius: 10px;
+    border: 1px solid var(--linea);
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+
+  .nav-puntos {
+    display: flex;
+    gap: 5px;
+    padding: 8px 10px;
+    background: var(--papel);
+  }
+
+  .nav-puntos i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--linea);
+  }
+
+  .nav-cuerpo {
+    display: grid;
+    gap: 7px;
+    padding: 14px 12px;
+  }
+
+  .nb {
+    height: 9px;
+    border-radius: 99px;
+    background: var(--linea);
+  }
+
+  .nb1 {
+    width: 70%;
+    height: 14px;
+    background: var(--tinta);
+  }
+
+  .nb2 {
+    width: 90%;
+  }
+
+  .nb3 {
+    width: 34%;
+    height: 22px;
+    background: var(--naranja);
+  }
+
+  .srv-apps {
+    margin-top: 28px;
+    color: var(--gris);
+    font-size: var(--t-1);
+    max-width: none;
+  }
+
+  .srv-apps a {
+    color: var(--naranja-texto);
+    font-weight: 700;
+  }
+</style>

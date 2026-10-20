@@ -1,0 +1,194 @@
+---
+import '../styles/global.css';
+import { PREVIEW, contacto, url } from '../data/fj';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const anio = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {PREVIEW && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
+    <meta name="theme-color" content="#0d1a2a" />
+    <script is:inline>
+      // Las animaciones solo esconden contenido si hay JS y no se pidió movimiento reducido.
+      // Si el script de animación no arranca en 3 s, se muestra todo tal cual.
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('motion');
+        setTimeout(function () {
+          if (!window.__fjMotion) document.documentElement.classList.remove('motion');
+        }, 3000);
+      }
+    </script>
+  </head>
+  <body>
+    {
+      PREVIEW && (
+        <div class="aviso-previa">
+          Vista previa. Lo marcado como <span class="aviso-chip">Pendiente</span> falta por confirmar.
+        </div>
+      )
+    }
+    <header class="cabecera">
+      <div class="envoltura cabecera-fila">
+        <a class="marca" href={url()} aria-label="FJ Media, inicio">
+          <span class="marca-fj">FJ</span><span class="marca-media">MEDIA</span>
+        </a>
+        <nav aria-label="Principal">
+          <ul class="nav">
+            <li><a href={url('#como-creamos')}>Cómo creamos</a></li>
+            <li><a href={url('#servicios')}>Servicios</a></li>
+            <li><a href={url('#clientes')}>Clientes</a></li>
+          </ul>
+        </nav>
+        <a class="boton boton-principal cabecera-cta" href={url('#contacto')}>Contacto</a>
+      </div>
+    </header>
+
+    <main id="contenido">
+      <slot />
+    </main>
+
+    <footer class="pie">
+      <div class="envoltura pie-fila">
+        <span class="marca" aria-hidden="true"><span class="marca-fj">FJ</span><span class="marca-media">MEDIA</span></span>
+        <p>Contenido para redes sociales y páginas web desde {contacto.ciudad}.</p>
+        <p class="pie-legal">
+          © {anio} FJ Media
+          {PREVIEW && <> <a href={url('cambios/')}>Bitácora de cambios</a></>}
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .aviso-previa {
+    background: #fff3d6;
+    color: #4d3b00;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 6px 16px;
+  }
+
+  .aviso-chip {
+    display: inline-block;
+    border: 1px dashed currentColor;
+    border-radius: 4px;
+    padding: 0 6px;
+    font-weight: 700;
+  }
+
+  .cabecera {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--tinta);
+    color: var(--blanco);
+  }
+
+  .cabecera-fila {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    min-height: var(--cabecera);
+  }
+
+  .marca {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 0.9;
+    text-decoration: none;
+    font-family: var(--display);
+  }
+
+  .marca-fj {
+    color: var(--naranja);
+    font-weight: 900;
+    font-size: 1.55rem;
+    font-stretch: 112%;
+    letter-spacing: -0.02em;
+  }
+
+  .marca-media {
+    font-size: 0.56rem;
+    font-weight: 500;
+    letter-spacing: 0.42em;
+    margin-right: -0.42em;
+    margin-top: 3px;
+  }
+
+  nav {
+    margin-left: auto;
+  }
+
+  .nav {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 12px;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 999px;
+  }
+
+  .nav a:hover {
+    background: var(--puerto);
+  }
+
+  .cabecera-cta {
+    min-height: 44px;
+    padding: 8px 18px;
+  }
+
+  @media (max-width: 760px) {
+    nav {
+      display: none;
+    }
+
+    .cabecera-cta {
+      margin-left: auto;
+    }
+  }
+
+  .pie {
+    background: var(--tinta);
+    color: var(--niebla);
+    padding: 48px 0 40px;
+  }
+
+  .pie-fila {
+    display: grid;
+    gap: 14px;
+    justify-items: start;
+  }
+
+  .pie .marca {
+    color: var(--blanco);
+  }
+
+  .pie-legal a {
+    margin-left: 12px;
+    color: var(--blanco);
+  }
+</style>

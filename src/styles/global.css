@@ -1,0 +1,165 @@
+@import '@fontsource-variable/archivo/wdth.css';
+@import '@fontsource-variable/hanken-grotesk';
+
+/* Colores del logo de FJ Media (medidos del PNG): tinta #0D1A2A y naranja #E15412.
+   El naranja solo va como texto en tamaños grandes o sobre tinta (4.6:1); sobre papel se usa --naranja-texto. */
+:root {
+  --tinta: #0d1a2a;
+  --puerto: #16304a;
+  --puerto-claro: #24476b;
+  --naranja: #e15412;
+  --naranja-texto: #b3400a;
+  --papel: #f1f4f8;
+  --blanco: #ffffff;
+  --niebla: #a9b8c9;
+  --gris: #4a5a6e;
+  --linea: #d5dde7;
+
+  --display: 'Archivo Variable', 'Arial Narrow', sans-serif;
+  --texto: 'Hanken Grotesk Variable', system-ui, sans-serif;
+
+  /* Escala tipográfica (razón 1.25 en móvil, crece con el ancho). */
+  --t-0: 1rem;
+  --t-1: 1.125rem;
+  --t-2: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --t-3: clamp(1.6rem, 1.2rem + 1.6vw, 2.4rem);
+  --t-4: clamp(2.1rem, 1.3rem + 3.4vw, 4.2rem);
+  --t-5: clamp(2.6rem, 1.2rem + 5.6vw, 6.2rem);
+
+  --ancho: 1200px;
+  --margen: clamp(16px, 4vw, 40px);
+  --radio: 14px;
+  --radio-chico: 6px;
+  --cabecera: 64px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--cabecera) + 12px);
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--texto);
+  font-size: var(--t-0);
+  line-height: 1.6;
+  overflow-x: clip;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  line-height: 1.02;
+  margin: 0;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  max-width: 62ch;
+  text-wrap: pretty;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--naranja);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.envoltura {
+  width: min(100% - 2 * var(--margen), var(--ancho));
+  margin-inline: auto;
+}
+
+.visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Títulos de sección: Archivo se ensancha y engorda al entrar en pantalla (ver scripts/motion.ts).
+   Sin JS o con movimiento reducido se quedan en su forma final. */
+.cinetico {
+  --ancho-letra: 100;
+  --peso: 760;
+  font-size: var(--t-4);
+  font-weight: var(--peso);
+  font-stretch: calc(var(--ancho-letra) * 1%);
+}
+
+.motion .cinetico {
+  --ancho-letra: 68;
+  --peso: 420;
+}
+
+/* Botones: el naranja lleva texto en tinta (4.6:1); el blanco sobre naranja no llega a AA. */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: var(--t-0);
+  text-decoration: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.boton:hover {
+  transform: translateY(-2px);
+}
+
+.boton-principal {
+  background: var(--naranja);
+  color: var(--tinta);
+}
+
+.boton-principal:hover {
+  background: #f06a2a;
+}
+
+.boton-secundario {
+  border-color: currentColor;
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boton,
+  .boton:hover {
+    transition: none;
+    transform: none;
+  }
+}

@@ -1,0 +1,30 @@
+---
+// Marcador visible de algo que falta por confirmar o entregar. Debe desaparecer antes del lanzamiento.
+interface Props {
+  texto: string;
+  oscuro?: boolean;
+}
+
+const { texto, oscuro = false } = Astro.props;
+---
+
+<span class:list={['pendiente', { oscuro }]}><strong>Pendiente:</strong> {texto}</span>
+
+<style>
+  .pendiente {
+    display: inline-block;
+    border: 2px dashed var(--naranja-texto);
+    color: var(--naranja-texto);
+    background: #fff7f1;
+    border-radius: var(--radio-chico);
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .pendiente.oscuro {
+    border-color: var(--naranja);
+    color: #ffd2b8;
+    background: rgb(225 84 18 / 0.12);
+  }
+</style>
