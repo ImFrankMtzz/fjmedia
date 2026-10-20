@@ -1,0 +1,7 @@
+out/
+node_modules/
+.astro/
+dist/
+.claude/
+*.log
+.env*
