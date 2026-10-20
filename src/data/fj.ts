@@ -15,8 +15,8 @@ export const contacto = {
 export type Cliente = {
   nombre: string;
   nombreLargo?: string;
-  /** Ruta dentro de public/, o null si aún no tenemos el logo. */
-  logo: string | null;
+  /** Logo dentro de public/ con su tamaño original (para igualar su peso visual), o null si falta. */
+  logo: { src: string; ancho: number; alto: number } | null;
   /** Lo que FJ Media hace por el cliente, confirmado por Frank el 2026-10-19. */
   servicios: string[];
   url?: string;
@@ -25,12 +25,12 @@ export type Cliente = {
 const redes = ['Facebook e Instagram', 'Publicaciones de cada mes', 'Anuncios en Facebook'];
 
 export const clientes: Cliente[] = [
-  { nombre: 'Lipocosmedic', logo: 'clientes/lipocosmedic.png', servicios: redes },
-  { nombre: 'Laboratorio Santa María', logo: 'clientes/laboratorio-santa-maria.png', servicios: redes },
+  { nombre: 'Lipocosmedic', logo: { src: 'clientes/lipocosmedic.png', ancho: 226, alto: 360 }, servicios: redes },
+  { nombre: 'Laboratorio Santa María', logo: { src: 'clientes/laboratorio-santa-maria.png', ancho: 338, alto: 177 }, servicios: redes },
   {
     nombre: 'Clínica Santa Clara',
     nombreLargo: 'Centro Médico de Especialidades Santa Clara',
-    logo: 'clientes/santa-clara.svg',
+    logo: { src: 'clientes/santa-clara.svg', ancho: 684, alto: 238 },
     servicios: ['Página web'],
     url: 'https://clinicasantaclara.mx',
   },

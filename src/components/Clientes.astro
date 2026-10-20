@@ -1,5 +1,6 @@
 ---
 import Pendiente from './Pendiente.astro';
+import LogoCliente from './LogoCliente.astro';
 import { clientes, url } from '../data/fj';
 
 ---
@@ -13,11 +14,7 @@ import { clientes, url } from '../data/fj';
         clientes.map((c) => (
           <li class="cliente">
             <div class="cliente-logo">
-              {c.logo ? (
-                <img src={url(c.logo)} alt={`Logotipo de ${c.nombreLargo ?? c.nombre}`} loading="lazy" />
-              ) : (
-                <span class="logo-texto">{c.nombre}</span>
-              )}
+              <LogoCliente cliente={c} />
             </div>
             <div class="cliente-info">
               <h3>{c.nombre}</h3>
@@ -65,27 +62,16 @@ import { clientes, url } from '../data/fj';
     }
   }
 
+  /* Todos los logos en un recuadro del mismo tamaño, centrados. */
   .cliente-logo {
-    height: 96px;
+    width: 220px;
+    max-width: 100%;
+    height: 132px;
     display: flex;
     align-items: center;
-  }
-
-  .cliente-logo img {
-    max-height: 88px;
-    max-width: 200px;
-    width: auto;
-    object-fit: contain;
-  }
-
-  .logo-texto {
-    font-family: var(--display);
-    font-weight: 800;
-    font-size: var(--t-2);
-    font-stretch: 90%;
-    padding: 10px 14px;
-    border: 2px dashed var(--linea);
-    border-radius: var(--radio-chico);
+    justify-content: center;
+    border-radius: var(--radio);
+    background: var(--papel);
   }
 
   .cliente-info {
@@ -117,7 +103,8 @@ import { clientes, url } from '../data/fj';
   }
 
   .clientes-mas {
-    margin-top: 28px;
+    max-width: none;
+    margin-top: 0;
     padding-top: 24px;
     border-top: 1px solid var(--linea);
   }

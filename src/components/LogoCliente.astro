@@ -1,0 +1,47 @@
+---
+import { url, type Cliente } from '../data/fj';
+
+// Los logos tienen formas muy distintas (uno alto, otros muy anchos). Para que pesen lo mismo a la vista,
+// la altura baja con la proporción, pero menos que a área constante (que deja chicos a los logos anchos
+// con letra fina): alto = base · proporción^-0.4.
+interface Props {
+  cliente: Cliente;
+  /** Altura en px que tendría un logo cuadrado. */
+  base?: number;
+}
+
+const { cliente, base = 88 } = Astro.props;
+const logo = cliente.logo;
+const proporcion = logo ? logo.ancho / logo.alto : 1;
+const alto = Math.round(base * Math.pow(proporcion, -0.4));
+const ancho = Math.round(alto * proporcion);
+---
+
+{
+  logo ? (
+    <img
+      class="logo-cliente"
+      src={url(logo.src)}
+      alt={`Logotipo de ${cliente.nombreLargo ?? cliente.nombre}`}
+      width={ancho}
+      height={alto}
+      loading="lazy"
+    />
+  ) : (
+    <span class="logo-cliente-texto">{cliente.nombre}</span>
+  )
+}
+
+<style>
+  .logo-cliente {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .logo-cliente-texto {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: var(--t-2);
+  }
+</style>

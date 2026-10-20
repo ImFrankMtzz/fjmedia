@@ -5,6 +5,7 @@ import PerfilQueSeArma from '../components/PerfilQueSeArma.astro';
 import Alcance from '../components/Alcance.astro';
 import CtaFinal from '../components/CtaFinal.astro';
 import Pieza, { type TipoPieza } from '../components/Pieza.astro';
+import LogoCliente from '../components/LogoCliente.astro';
 import { clientes, url } from '../data/fj';
 
 // Menú abierto de lo que puede llevar un plan; cada plan se arma con el cliente.
@@ -84,11 +85,7 @@ const deRedes = clientes.filter((c) => c.servicios.includes('Facebook e Instagra
         {
           deRedes.map((c) => (
             <li>
-              {c.logo ? (
-                <img src={url(c.logo)} alt={c.nombre} loading="lazy" />
-              ) : (
-                <span class="logo-texto">{c.nombre}</span>
-              )}
+              <LogoCliente cliente={c} base={70} />
             </li>
           ))
         }
@@ -201,14 +198,13 @@ const deRedes = clientes.filter((c) => c.servicios.includes('Facebook e Instagra
     padding: 0;
   }
 
-  .testimonio-logos img {
-    max-height: 64px;
-    width: auto;
-  }
-
-  .logo-texto {
-    font-family: var(--display);
-    font-weight: 800;
-    font-size: var(--t-2);
+  .testimonio-logos li {
+    width: 168px;
+    height: 104px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radio);
+    background: var(--blanco);
   }
 </style>
